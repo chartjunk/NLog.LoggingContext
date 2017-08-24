@@ -1,11 +1,12 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLogContext", "src\NLogContext\NLogContext.csproj", "{AACE0AF9-D2C6-4DEE-9CD8-78C915CED96B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLogContext.IntegrationTest", "test\NLogContext.IntegrationTest\NLogContext.IntegrationTest.csproj", "{B5E6C8A8-BCF1-4EB1-B9D9-D7059EB101C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLogContext.UnitTest", "test\NLogContext.UnitTest\NLogContext.UnitTest.csproj", "{016D549F-3B65-4A65-90C5-3E5C18DAF73E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +22,15 @@ Global
 		{B5E6C8A8-BCF1-4EB1-B9D9-D7059EB101C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5E6C8A8-BCF1-4EB1-B9D9-D7059EB101C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5E6C8A8-BCF1-4EB1-B9D9-D7059EB101C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{016D549F-3B65-4A65-90C5-3E5C18DAF73E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{016D549F-3B65-4A65-90C5-3E5C18DAF73E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{016D549F-3B65-4A65-90C5-3E5C18DAF73E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{016D549F-3B65-4A65-90C5-3E5C18DAF73E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {779D6B92-3AF5-4CA7-984C-750823450129}
 	EndGlobalSection
 EndGlobal

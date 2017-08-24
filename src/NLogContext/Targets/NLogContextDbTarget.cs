@@ -37,16 +37,14 @@ namespace NLogContext.Targets
                 $"NULLIF(@p_exception,''), " +
                 $"NULLIF(@p_parentcontextid,''), " +
                 $"NULLIF(@p_topmostparentcontextid,''))";
-            Parameters.Add(new DatabaseParameterInfo { Name = "p_contextid", Layout = GetMdlcLayout(ContextIdIdentifier) });
-            Parameters.Add(new DatabaseParameterInfo { Name = "p_contextname", Layout = GetMdlcLayout(ContextNameIdentifier) });
-            Parameters.Add(new DatabaseParameterInfo { Name = "p_level", Layout = "${level}" });
-            Parameters.Add(new DatabaseParameterInfo { Name = "p_message", Layout = "${message}" });
-            Parameters.Add(new DatabaseParameterInfo { Name = "p_exception", Layout = "${exception}" });
-            Parameters.Add(new DatabaseParameterInfo { Name = "p_parentcontextid", Layout = GetMdlcLayout(ParentContextIdIdentifier) });
-            Parameters.Add(new DatabaseParameterInfo { Name = "p_topmostparentcontextid", Layout = GetMdlcLayout(TopmostParentContextIdIdentifier) });
+            Parameters.Add(new DatabaseParameterInfo { Name = "p_contextid", Layout = Layouts.ContextIdLayout });
+            Parameters.Add(new DatabaseParameterInfo { Name = "p_contextname", Layout = Layouts.ContextNameLayout });
+            Parameters.Add(new DatabaseParameterInfo { Name = "p_level", Layout = Layouts.LevelLayout });
+            Parameters.Add(new DatabaseParameterInfo { Name = "p_message", Layout = Layouts.MessageLayout });
+            Parameters.Add(new DatabaseParameterInfo { Name = "p_exception", Layout = Layouts.ExceptionLayout });
+            Parameters.Add(new DatabaseParameterInfo { Name = "p_parentcontextid", Layout = Layouts.ParentContextIdLayout });
+            Parameters.Add(new DatabaseParameterInfo { Name = "p_topmostparentcontextid", Layout = Layouts.TopmostParentContextIdLayout });
             CommandType = System.Data.CommandType.Text;
         }
-
-        private static string GetMdlcLayout(string parameterName) => $"${{mdlc:{parameterName}}}";
     }
 }
