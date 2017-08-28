@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NLogContext.IntegrationTest.SQLite
+namespace NLogContext.TestUtils
 {
     public class LogRow
     {
-        public long Id { get; set; }
+        public long? Id { get; set; }
+        public string dateTime { get; set; }
         public string ContextId { get; set; }
         public string ContextName { get; set; }
         public string Message { get; set; }

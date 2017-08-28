@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using Dapper;
+using NLogContext.TestUtils;
 
 namespace NLogContext.IntegrationTest.SQLite
 {

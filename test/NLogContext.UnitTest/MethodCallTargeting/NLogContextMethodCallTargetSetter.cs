@@ -11,32 +11,39 @@ namespace NLogContext.UnitTest.MethodCallTargeting
 {
     internal static class NLogContextMethodCallTargetSetter
     {
-        public static void SetTarget<TClass>(string targetName, Expression<Action<TClass>> methodCall) where TClass : class
+        public static void SetTarget(string targetName, Expression<Action> staticMethodCall)
         {
-            var method = (methodCall as MethodCallExpression).Method;
+            var method = (((LambdaExpression)staticMethodCall).Body as MethodCallExpression).Method;
 
             var target = new MethodCallTarget(targetName)
             {
-                ClassName = typeof(TClass).AssemblyQualifiedName,
+                ClassName = method.DeclaringType.AssemblyQualifiedName,
                 MethodName = method.Name,
             };
 
             var methodParameters = method.GetParameters().ToList().Select(p => p.Name).ToList();
 
-            new MethodCallParameter[]
-            {
-                new MethodCallParameter("contextId", Layouts.ContextIdLayout),
-                new MethodCallParameter("contextName", Layouts.ContextNameLayout),
-                new MethodCallParameter("level", Layouts.LevelLayout),
-                new MethodCallParameter("parentContextId", Layouts.ParentContextIdLayout)
-            }
-            .Join(methodParameters.Select((pName, ix) => new { pName, ix }), a => a.Name, b => b.pName, (a, b) => new
-            {
-                methodCallParameter = a,
-                order = b.ix
-            })
-            .OrderBy(i => i.order).Select(i => i.methodCallParameter).ToList()
-            .ForEach(target.Parameters.Add);
+            var methodCallParameters =
+                new MethodCallParameter[]
+                {
+                    new MethodCallParameter("contextId", Layouts.ContextIdLayout),
+                    new MethodCallParameter("contextName", Layouts.ContextNameLayout),
+                    new MethodCallParameter("level", Layouts.LevelLayout),
+                    new MethodCallParameter("parentContextId", Layouts.ParentContextIdLayout),
+                    new MethodCallParameter("dateTime", Layouts.DateTimeLayout),
+                    new MethodCallParameter("exception", Layouts.ExceptionLayout),
+                    new MethodCallParameter("topmostParentContextId", Layouts.TopmostParentContextIdLayout),
+                    new MethodCallParameter("message", Layouts.MessageLayout),
+                }
+                .Join(methodParameters.Select((pName, ix) => new { pName, ix }), a => a.Name, b => b.pName, (a, b) => new
+                {
+                    methodCallParameter = a,
+                    order = b.ix
+                })
+                .OrderBy(i => i.order).Select(i => i.methodCallParameter).ToList();
+
+            methodCallParameters
+                .ForEach(target.Parameters.Add);
 
             var rule = new LoggingRule("*", LogLevel.Trace, target);
             LogManager.Configuration = new LoggingConfiguration();

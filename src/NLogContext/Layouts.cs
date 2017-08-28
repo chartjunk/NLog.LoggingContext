@@ -10,6 +10,7 @@ namespace NLogContext
         public static Layout LevelLayout => "${level}";
         public static Layout MessageLayout => "${message}";
         public static Layout ExceptionLayout => "${exception}";
+        public static Layout DateTimeLayout => "${date:format=yyyy-MM-dd HH:mm.ss}";
         public static Layout ParentContextIdLayout => GetMdlcLayout(ParentContextIdIdentifier);
         public static Layout TopmostParentContextIdLayout => GetMdlcLayout(TopmostParentContextIdIdentifier);
 

@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NLog;
 using System.Linq;
+using static NLogContext.TestUtils.ContextUtils;
 
 namespace NLogContext.IntegrationTest
 {
@@ -122,14 +123,6 @@ namespace NLogContext.IntegrationTest
             Assert.AreEqual(1, context1Rows.Where(r => r.ContextId == r.TopmostParentContextId).Count());
             Assert.AreEqual(1, context2Rows.Select(r => r.ContextId).Distinct().Count());
             Assert.AreEqual(context1Rows.Single().ContextId, context2Rows.Select(r => r.ParentContextId).Distinct().Single());
-        }
-
-        private void DoWithContext(string contextName, Action<Logger> action) => DoWithContext(action, contextName);
-        private void DoWithContext(Action<Logger> action, string contextName = "MyContext")
-        {
-            var logger = LogManager.GetCurrentClassLogger();            
-            using (new NLogContext(contextName))
-                action(logger);
         }
     }
 }
