@@ -17,5 +17,10 @@ namespace NLogContext.TestUtils
         public string Exception { get; set; }
         public string ParentContextId { get; set; }
         public string TopmostParentContextId { get; set; }
+
+        /// <summary>
+        /// TODO: refactor this to another class that inherits LogRow
+        /// </summary>
+        public string TheUsername { get; set; }
     }
 }

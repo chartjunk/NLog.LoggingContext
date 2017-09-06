@@ -36,7 +36,7 @@ namespace NLogContext.Targets
             return this;
         }
 
-        protected void AddColumn<TColumn>(
+        internal void AddColumn<TColumn>(
             Expression<Func<TLogSchema, TColumn>> columnExpression,
             Layout layout,
             string tableColumnName = null)
@@ -52,7 +52,7 @@ namespace NLogContext.Targets
             InsertParameterPairs.Add(new InsertParameterPair { InsertParamenterName = insertParameterName, TableColumnName = tableColumnName });
         }
 
-        protected void RefreshInsertCommandText()
+        internal void RefreshInsertCommandText()
         {
             var columns = string.Join(",", InsertParameterPairs.Select(p => "[" + p.TableColumnName + "]"));
             var parameters = string.Join(",", InsertParameterPairs.Select(p => "NULLIF(@" + p.InsertParamenterName + ",'')"));

@@ -46,6 +46,7 @@
     <Compile Include="ContextUtils.cs" />
     <Compile Include="LogRow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DefaultLogSchemaWithUsername.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
