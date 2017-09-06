@@ -2,18 +2,18 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("NLogContext.IntegrationTest")]
+[assembly: AssemblyTitle("NLogContext.IntegTest")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NLogContext.IntegrationTest")]
+[assembly: AssemblyProduct("NLogContext.IntegTest")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
 
-[assembly: Guid("b5e6c8a8-bcf1-4eb1-b9d9-d7059eb101c6")]
+[assembly: Guid("6ade7d41-fd04-4c22-b500-b6ce13b791d7")]
 
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]

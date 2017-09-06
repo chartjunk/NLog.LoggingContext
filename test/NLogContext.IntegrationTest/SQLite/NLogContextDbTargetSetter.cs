@@ -10,7 +10,7 @@ namespace NLogContext.IntegrationTest.SQLite
     {
         public static void SetTarget(string targetName, string connectionString, string schemaTableName)
         {
-            var target = new NLogContextDbTarget(targetName, schemaTableName)
+            var target = new DefaultNLogContextDbTarget(targetName, schemaTableName)
             {
                 CommandType = System.Data.CommandType.Text,
                 ConnectionString = connectionString,

@@ -68,7 +68,7 @@ namespace NLogContext.IntegrationTest
             // Assert
             var logRows = _access.GetLogRows();
             Assert.AreEqual(2, logRows.Count);
-            CollectionAssert.AreEquivalent(new[] { testMessage1, testMessage2 }, logRows.Select(r => r.Message).ToArray());
+             CollectionAssert.AreEquivalent(new[] { testMessage1, testMessage2 }, logRows.Select(r => r.Message).ToArray());
             Assert.AreEqual(1, logRows.Select(r => r.ContextId).Distinct().Count());
             Assert.IsTrue(logRows.All(r => r.ContextId == r.TopmostParentContextId));
         }
