@@ -51,7 +51,6 @@ namespace NLogContext.IntegrationTest
             TestCustomUsernameColumnExtension(
                 withColumnNameFunc: target =>
                 {
-                    // Tell the custom target to get the Username-value from a gdc-entry for each log row
                     target.WithColumn("${gdc:item=" + UsernameIdentifier + "}", columnName);
                     return columnName;
                 },
@@ -65,7 +64,6 @@ namespace NLogContext.IntegrationTest
             TestCustomUsernameColumnExtension(
                 withColumnNameFunc: target =>
                 {
-                    // Tell the custom target to get the Username-value from a gdc-entry for each log row
                     target.WithColumn("${gdc:item=" + UsernameIdentifier + "}", schemaExpression);
                     return "SchemaUsername";
                 },
@@ -88,6 +86,7 @@ namespace NLogContext.IntegrationTest
             // Initialize DefaultSchema fields
             DefaultNLogContextDbTarget.DoDefaultInitialization(target, targetName, _schemaTableName);
 
+            // Tell the custom target to get the Username-value from a gdc-entry for each log row
             var columnName = withColumnNameFunc(target);
 
             // Add an additional installation command for creating the StringUsername column
