@@ -46,35 +46,40 @@ namespace NLogContext.IntegrationTest
 
         [TestMethod]
         public void TestCustomUsernameColumnExtensionWithColumnName()
-            => TestCustomUsernameColumnExtension(
-                withColumnNameFunc: (target, stringName, schemaExpression) =>
+        {
+            var columnName = "StringUsername";
+            TestCustomUsernameColumnExtension(
+                withColumnNameFunc: target =>
                 {
                     // Tell the custom target to get the Username-value from a gdc-entry for each log row
-                    target.WithColumn("${gdc:item=" + UsernameIdentifier + "}", stringName);
-                    return stringName;
+                    target.WithColumn("${gdc:item=" + UsernameIdentifier + "}", columnName);
+                    return columnName;
                 },
                 assertActualUsernameAction: (expectedUsername, logRow) => Assert.AreEqual(expectedUsername, logRow.StringUsername));
+        }
 
         [TestMethod]
-        public void TestCustomUSernameColumnExtensionWithSchemaPropertyExpression()
-            => TestCustomUsernameColumnExtension(
-                withColumnNameFunc: (target, stringName, schemaExpression) =>
+        public void TestCustomUsernameColumnExtensionWithSchemaPropertyExpression()
+        {
+            Expression<Func<DefaultLogSchemaWithUsername, string>> schemaExpression = r => r.SchemaUsername;
+            TestCustomUsernameColumnExtension(
+                withColumnNameFunc: target =>
                 {
                     // Tell the custom target to get the Username-value from a gdc-entry for each log row
                     target.WithColumn("${gdc:item=" + UsernameIdentifier + "}", schemaExpression);
                     return "SchemaUsername";
                 },
-                assertActualUsernameAction: (expectedUsername, logRow) => Assert.AreEqual(expectedUsername, logRow.SchemaUsername));
-
+                assertActualUsernameAction: (expectedUsername, logRow) => Assert.AreEqual(expectedUsername,
+                    logRow.SchemaUsername));
+        }
 
         public void TestCustomUsernameColumnExtension(
-            Func<NLogContextDbTarget<DefaultLogSchemaWithUsername>, string, Expression<Func<DefaultLogSchemaWithUsername, string>>, string> withColumnNameFunc,
+            Func<NLogContextDbTarget<DefaultLogSchemaWithUsername>, string> withColumnNameFunc,
             Action<string, LogRow> assertActualUsernameAction)
         {
             // Assign
             var testUsername = "TestDummy";
             var targetName = "MyTarget";
-            var usernameColumnName = "StringUsername";
             var testMsg = "Hallo world!";
 
             // Create custom target with an extra StringUsername column
@@ -83,7 +88,7 @@ namespace NLogContext.IntegrationTest
             // Initialize DefaultSchema fields
             DefaultNLogContextDbTarget.DoDefaultInitialization(target, targetName, _schemaTableName);
 
-            var columnName = withColumnNameFunc(target, usernameColumnName, s => s.SchemaUsername);
+            var columnName = withColumnNameFunc(target);
 
             // Add an additional installation command for creating the StringUsername column
             target.InstallDdlCommands.Add(new DatabaseCommandInfo
