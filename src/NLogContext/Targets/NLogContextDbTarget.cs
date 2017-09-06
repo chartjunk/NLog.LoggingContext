@@ -26,30 +26,38 @@ namespace NLogContext.Targets
             CommandType = System.Data.CommandType.Text;
         }
 
-        public NLogContextDbTarget<TLogSchema> WithColumn<TColumn>(
-            Expression<Func<TLogSchema, TColumn>> columnExpression,
-            Layout layout,
-            string tableColumnName = null) 
+        public NLogContextDbTarget<TLogSchema> WithColumn(
+            Layout sourceLayout, string targetTableColumnName) 
         {
-            AddColumn(columnExpression, layout, tableColumnName);
+            AddColumn(sourceLayout, targetTableColumnName);
             RefreshInsertCommandText();
             return this;
         }
 
-        internal void AddColumn<TColumn>(
-            Expression<Func<TLogSchema, TColumn>> columnExpression,
-            Layout layout,
-            string tableColumnName = null)
+        public NLogContextDbTarget<TLogSchema> WithColumn<TColumn>(
+            Layout sourceLayout,
+            Expression<Func<TLogSchema, TColumn>> targetTableColumnExpression)
         {
-            var propertyInfo = (columnExpression?.Body as MemberExpression)?.Member as PropertyInfo;
-            if (propertyInfo == null)
-                throw new ArgumentException("Parameter not PropertyExpression", nameof(columnExpression));
-            tableColumnName = tableColumnName ?? propertyInfo.Name;
+            AddColumn(sourceLayout, targetTableColumnExpression);
+            RefreshInsertCommandText();
+            return this;
+        }
 
-            // Add a new parameter
-            var insertParameterName = "p_nlogctx_" + propertyInfo.Name.ToLower();
-            Parameters.Add(new DatabaseParameterInfo { Name = insertParameterName, Layout = layout });
-            InsertParameterPairs.Add(new InsertParameterPair { InsertParamenterName = insertParameterName, TableColumnName = tableColumnName });
+        internal void AddColumn(Layout sourceLayout, string targetTableColumnName)
+        {
+            var insertParameterName = "p_nlogctx_" + targetTableColumnName;
+            Parameters.Add(new DatabaseParameterInfo { Name = insertParameterName, Layout = sourceLayout });
+            InsertParameterPairs.Add(new InsertParameterPair { InsertParamenterName = insertParameterName, TableColumnName = targetTableColumnName });
+        }
+
+        internal void AddColumn<TColumn>(
+            Layout sourceLayout,
+            Expression<Func<TLogSchema, TColumn>> targetTableColumnExpression)
+        {
+            var propertyInfo = (targetTableColumnExpression?.Body as MemberExpression)?.Member as PropertyInfo;
+            if (propertyInfo == null)
+                throw new ArgumentException("Parameter not PropertyExpression", nameof(targetTableColumnExpression));
+            AddColumn(sourceLayout, propertyInfo.Name);
         }
 
         internal void RefreshInsertCommandText()

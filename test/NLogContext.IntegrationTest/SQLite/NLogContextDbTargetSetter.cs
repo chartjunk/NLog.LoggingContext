@@ -12,6 +12,10 @@ namespace NLogContext.IntegrationTest.SQLite
             NLogContextDbTarget<TLogSchema> target, 
             string targetName, string connectionString, string schemaTableName)
         {
+            target.CommandType = System.Data.CommandType.Text;
+            target.ConnectionString = connectionString;
+            target.DBProvider = typeof(System.Data.SQLite.SQLiteConnection).AssemblyQualifiedName;
+
             // HACK: SQLite crashes if type is *CHAR(MAX) instead of *CHAR(123)
             var command = target.InstallDdlCommands.First().Text.ToString().Replace("CHAR(MAX)", "CHAR(123)").Replace("'", "");
             var newCommand = new DatabaseCommandInfo
@@ -31,12 +35,7 @@ namespace NLogContext.IntegrationTest.SQLite
 
         public static void SetTarget(string targetName, string connectionString, string schemaTableName)
         {
-            var target = new DefaultNLogContextDbTarget(targetName, schemaTableName)
-            {
-                CommandType = System.Data.CommandType.Text,
-                ConnectionString = connectionString,
-                DBProvider = typeof(System.Data.SQLite.SQLiteConnection).AssemblyQualifiedName
-            };
+            var target = new DefaultNLogContextDbTarget(targetName, schemaTableName);
             SetTarget(target, targetName, connectionString, schemaTableName);
         }
     }

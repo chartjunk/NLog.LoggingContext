@@ -19,8 +19,9 @@ namespace NLogContext.TestUtils
         public string TopmostParentContextId { get; set; }
 
         /// <summary>
-        /// TODO: refactor this to another class that inherits LogRow
+        /// TODO: refactor these to another class that inherits LogRow
         /// </summary>
-        public string TheUsername { get; set; }
+        public string StringUsername { get; set; }
+        public string SchemaUsername { get; set; }
     }
 }

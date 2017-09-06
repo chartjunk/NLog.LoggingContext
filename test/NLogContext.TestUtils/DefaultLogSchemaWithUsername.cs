@@ -4,6 +4,6 @@ namespace NLogContext.TestUtils
 {
     public class DefaultLogSchemaWithUsername : DefaultLogSchema
     {
-        public string Username { get; set; }
+        public string SchemaUsername { get; set; }
     }
 }

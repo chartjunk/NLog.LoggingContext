@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Data;
+using System.Linq;
+using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NLog;
 using NLog.Targets;
@@ -42,40 +44,65 @@ namespace NLogContext.IntegrationTest
             }
         }
 
-        /// <summary>
-        /// TODO: clean this up and refactor initialization
-        /// </summary>
         [TestMethod]
-        public void TestCustomUsernameColumnExtension()
+        public void TestCustomUsernameColumnExtensionWithColumnName()
+            => TestCustomUsernameColumnExtension(
+                withColumnNameFunc: (target, stringName, schemaExpression) =>
+                {
+                    // Tell the custom target to get the Username-value from a gdc-entry for each log row
+                    target.WithColumn("${gdc:item=" + UsernameIdentifier + "}", stringName);
+                    return stringName;
+                },
+                assertActualUsernameAction: (expectedUsername, logRow) => Assert.AreEqual(expectedUsername, logRow.StringUsername));
+
+        [TestMethod]
+        public void TestCustomUSernameColumnExtensionWithSchemaPropertyExpression()
+            => TestCustomUsernameColumnExtension(
+                withColumnNameFunc: (target, stringName, schemaExpression) =>
+                {
+                    // Tell the custom target to get the Username-value from a gdc-entry for each log row
+                    target.WithColumn("${gdc:item=" + UsernameIdentifier + "}", schemaExpression);
+                    return "SchemaUsername";
+                },
+                assertActualUsernameAction: (expectedUsername, logRow) => Assert.AreEqual(expectedUsername, logRow.SchemaUsername));
+
+
+        public void TestCustomUsernameColumnExtension(
+            Func<NLogContextDbTarget<DefaultLogSchemaWithUsername>, string, Expression<Func<DefaultLogSchemaWithUsername, string>>, string> withColumnNameFunc,
+            Action<string, LogRow> assertActualUsernameAction)
         {
+            // Assign
             var testUsername = "TestDummy";
             var targetName = "MyTarget";
-            var usernameColumnName = "TheUsername";
-            var target = new NLogContextDbTarget<DefaultLogSchemaWithUsername>(targetName, _schemaTableName)
-            {
-                CommandType = System.Data.CommandType.Text,
-                ConnectionString = _connectionString,
-                DBProvider = typeof(System.Data.SQLite.SQLiteConnection).AssemblyQualifiedName
-            };
+            var usernameColumnName = "StringUsername";
+            var testMsg = "Hallo world!";
+
+            // Create custom target with an extra StringUsername column
+            var target = new NLogContextDbTarget<DefaultLogSchemaWithUsername>(targetName, _schemaTableName);
+
+            // Initialize DefaultSchema fields
             DefaultNLogContextDbTarget.DoDefaultInitialization(target, targetName, _schemaTableName);
+
+            var columnName = withColumnNameFunc(target, usernameColumnName, s => s.SchemaUsername);
+
+            // Add an additional installation command for creating the StringUsername column
             target.InstallDdlCommands.Add(new DatabaseCommandInfo
             {
-                Text = $"ALTER TABLE {_schemaTableName} ADD COLUMN {usernameColumnName} VARCHAR(100)",
+                Text = $"ALTER TABLE {_schemaTableName} ADD COLUMN {columnName} VARCHAR(100)",
                 CommandType = CommandType.Text,
                 IgnoreFailures = false
             });
 
-            // Map username from the Property to the gdc-item
-            target.WithColumn(r => r.Username, "${gdc:item=" + UsernameIdentifier + "}", usernameColumnName);
-
             NLogContextDbTargetSetter.SetTarget(target, targetName, _connectionString, _schemaTableName);
             GlobalDiagnosticsContext.Set(UsernameIdentifier, testUsername);
 
-            var testMsg = "Hallo world!";
-
+            // Act
             DoWithContext(logger => logger.Info(testMsg));
 
-            var logRows = _access.GetLogRows();
+            // Assert
+            var logRow = _access.GetLogRows().Single();
+            Assert.AreEqual(testMsg, logRow.Message);
+            assertActualUsernameAction(testUsername, logRow);
         }
     }
 }
