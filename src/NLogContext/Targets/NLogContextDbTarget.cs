@@ -1,50 +1,63 @@
-﻿using NLog.Targets;
+﻿using System;
+using NLog.Targets;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using NLog.Layouts;
 using static NLogContext.Identifiers;
 
 namespace NLogContext.Targets
 {
-    public class NLogContextDbTarget : DatabaseTarget
+    public class NLogContextDbTarget<TLogSchema> : DatabaseTarget
     {
-        public NLogContextDbTarget(string name) : base(name) { }
-        
+        private class InsertParameterPair
+        {
+            public string InsertParamenterName { get; set; }
+            public string TableColumnName { get; set; }
+        }
+
+        private readonly string _schemaTableName;
+        private List<InsertParameterPair> InsertParameterPairs { get; set; } = new List<InsertParameterPair>();
+
         public NLogContextDbTarget(string name, string schemaTableName) : base(name)
         {
-            InstallDdlCommands.Add(new DatabaseCommandInfo
-            {
-                Text =
-                    $"CREATE TABLE {schemaTableName} ( " +
-                    $"  Id IDENTITY BIGINT PRIMARY KEY, " +
-                    $"  [ContextId] CHAR(36) NOT NULL, " +
-                    $"  [ContextName] VARCHAR(128), " +
-                    $"  [Level] VARCHAR(16), " +
-                    $"  [Message] NVARCHAR(MAX), " +
-                    $"  [Exception] NVARCHAR(MAX), " +
-                    $"  [InnerException] NVARCHAR(MAX), " +
-                    $"  [ParentContextId] CHAR(36), " +
-                    $"  [TopmostParentContextId] CHAR(36) NOT NULL " +
-                    $") ",
-                CommandType = System.Data.CommandType.Text,
-                IgnoreFailures = false
-            });
-            UninstallDdlCommands.Add(new DatabaseCommandInfo { Text = $"DROP TABLE {schemaTableName}", CommandType = System.Data.CommandType.Text, IgnoreFailures = false });
-            CommandText = 
-                $"INSERT INTO {schemaTableName} ([ContextId], [ContextName], [Level], [Message], [Exception], [ParentContextId], [TopmostParentContextId]) " +
-                $"VALUES (@p_contextid, " +
-                $"NULLIF(@p_contextname,''), " +
-                $"NULLIF(@p_level,''), " +
-                $"NULLIF(@p_message,''), " +
-                $"NULLIF(@p_exception,''), " +
-                $"NULLIF(@p_parentcontextid,''), " +
-                $"NULLIF(@p_topmostparentcontextid,''))";
-            Parameters.Add(new DatabaseParameterInfo { Name = "p_contextid", Layout = Layouts.ContextIdLayout });
-            Parameters.Add(new DatabaseParameterInfo { Name = "p_contextname", Layout = Layouts.ContextNameLayout });
-            Parameters.Add(new DatabaseParameterInfo { Name = "p_level", Layout = Layouts.LevelLayout });
-            Parameters.Add(new DatabaseParameterInfo { Name = "p_message", Layout = Layouts.MessageLayout });
-            Parameters.Add(new DatabaseParameterInfo { Name = "p_exception", Layout = Layouts.ExceptionLayout });
-            Parameters.Add(new DatabaseParameterInfo { Name = "p_parentcontextid", Layout = Layouts.ParentContextIdLayout });
-            Parameters.Add(new DatabaseParameterInfo { Name = "p_topmostparentcontextid", Layout = Layouts.TopmostParentContextIdLayout });
+            _schemaTableName = schemaTableName;
             CommandType = System.Data.CommandType.Text;
+        }
+
+        public NLogContextDbTarget<TLogSchema> WithColumn<TColumn>(
+            Expression<Func<TLogSchema, TColumn>> columnExpression,
+            Layout layout,
+            string tableColumnName = null) 
+        {
+            AddColumn(columnExpression, layout, tableColumnName);
+            RefreshInsertCommandText();
+            return this;
+        }
+
+        protected void AddColumn<TColumn>(
+            Expression<Func<TLogSchema, TColumn>> columnExpression,
+            Layout layout,
+            string tableColumnName = null)
+        {
+            var propertyInfo = (columnExpression?.Body as MemberExpression)?.Member as PropertyInfo;
+            if (propertyInfo == null)
+                throw new ArgumentException("Parameter not PropertyExpression", nameof(columnExpression));
+            tableColumnName = tableColumnName ?? propertyInfo.Name;
+
+            // Add a new parameter
+            var insertParameterName = "p_nlogctx_" + propertyInfo.Name.ToLower();
+            Parameters.Add(new DatabaseParameterInfo { Name = insertParameterName, Layout = layout });
+            InsertParameterPairs.Add(new InsertParameterPair { InsertParamenterName = insertParameterName, TableColumnName = tableColumnName });
+        }
+
+        protected void RefreshInsertCommandText()
+        {
+            var columns = string.Join(",", InsertParameterPairs.Select(p => "[" + p.TableColumnName + "]"));
+            var parameters = string.Join(",", InsertParameterPairs.Select(p => "NULLIF(@" + p.InsertParamenterName + ",'')"));
+            var commandText = $"INSERT INTO {_schemaTableName} (" + columns + ") VALUES (" + parameters + ")";
+            CommandText = commandText;
         }
     }
 }

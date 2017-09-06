@@ -48,6 +48,8 @@
     <Compile Include="Layouts.cs" />
     <Compile Include="NLogContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Targets\DefaultLogSchema.cs" />
+    <Compile Include="Targets\DefaultNLogContextDbTarget.cs" />
     <Compile Include="Targets\NLogContextDbTarget.cs" />
   </ItemGroup>
   <ItemGroup>
