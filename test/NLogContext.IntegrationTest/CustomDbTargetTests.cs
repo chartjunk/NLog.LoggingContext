@@ -46,34 +46,30 @@ namespace NLogContext.IntegrationTest
 
         [TestMethod]
         public void TestCustomUsernameColumnExtensionWithColumnName()
-        {
-            var columnName = "StringUsername";
-            TestCustomUsernameColumnExtension(
+            => TestCustomUsernameColumnExtension(
                 withColumnNameFunc: target =>
                 {
+                    var columnName = "StringUsername";
                     target.WithColumn("${gdc:item=" + UsernameIdentifier + "}", columnName);
                     return columnName;
                 },
-                assertActualUsernameAction: (expectedUsername, logRow) => Assert.AreEqual(expectedUsername, logRow.StringUsername));
-        }
+                getActualUsernameFunc: logRow => logRow.StringUsername);
+        
 
         [TestMethod]
         public void TestCustomUsernameColumnExtensionWithSchemaPropertyExpression()
-        {
-            Expression<Func<DefaultLogSchemaWithUsername, string>> schemaExpression = r => r.SchemaUsername;
-            TestCustomUsernameColumnExtension(
+            => TestCustomUsernameColumnExtension(
                 withColumnNameFunc: target =>
                 {
+                    Expression<Func<DefaultLogSchemaWithUsername, string>> schemaExpression = r => r.SchemaUsername;
                     target.WithColumn("${gdc:item=" + UsernameIdentifier + "}", schemaExpression);
                     return "SchemaUsername";
                 },
-                assertActualUsernameAction: (expectedUsername, logRow) => Assert.AreEqual(expectedUsername,
-                    logRow.SchemaUsername));
-        }
+                getActualUsernameFunc: logRow => logRow.SchemaUsername);
 
         public void TestCustomUsernameColumnExtension(
             Func<NLogContextDbTarget<DefaultLogSchemaWithUsername>, string> withColumnNameFunc,
-            Action<string, LogRow> assertActualUsernameAction)
+            Func<LogRow, string> getActualUsernameFunc)
         {
             // Assign
             var testUsername = "TestDummy";
@@ -106,7 +102,7 @@ namespace NLogContext.IntegrationTest
             // Assert
             var logRow = _access.GetLogRows().Single();
             Assert.AreEqual(testMsg, logRow.Message);
-            assertActualUsernameAction(testUsername, logRow);
+            Assert.AreEqual(testUsername, getActualUsernameFunc(logRow));
         }
     }
 }
