@@ -18,7 +18,7 @@ namespace NLogContext.Targets
         }
 
         private readonly string _schemaTableName;
-        private List<InsertParameterPair> InsertParameterPairs { get; set; } = new List<InsertParameterPair>();
+        private List<InsertParameterPair> InsertParameterPairs { get; } = new List<InsertParameterPair>();
 
         public NLogContextDbTarget(string name, string schemaTableName) : base(name)
         {
