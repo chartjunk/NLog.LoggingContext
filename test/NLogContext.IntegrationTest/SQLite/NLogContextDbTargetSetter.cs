@@ -9,8 +9,7 @@ namespace NLogContext.IntegrationTest.SQLite
     internal static class NLogContextDbTargetSetter
     {
         public static void SetTarget<TLogSchema>(
-            NLogContextDbTarget<TLogSchema> target, 
-            string targetName, string connectionString, string schemaTableName)
+            NLogContextDbTarget<TLogSchema> target, string connectionString)
         {
             target.CommandType = System.Data.CommandType.Text;
             target.ConnectionString = connectionString;
@@ -28,7 +27,7 @@ namespace NLogContext.IntegrationTest.SQLite
             target.Install(new InstallationContext { IgnoreFailures = false });
             var rule = new LoggingRule("*", LogLevel.Trace, target);
             LogManager.Configuration = new LoggingConfiguration();
-            LogManager.Configuration.AddTarget(targetName, target);
+            LogManager.Configuration.AddTarget(target.Name, target);
             LogManager.Configuration.LoggingRules.Add(rule);
             LogManager.ReconfigExistingLoggers();
         }
@@ -36,7 +35,7 @@ namespace NLogContext.IntegrationTest.SQLite
         public static void SetTarget(string targetName, string connectionString, string schemaTableName)
         {
             var target = new DefaultNLogContextDbTarget(targetName, schemaTableName);
-            SetTarget(target, targetName, connectionString, schemaTableName);
+            SetTarget(target, connectionString);
         }
     }
 }

@@ -5,12 +5,11 @@ namespace NLogContext.Targets
 {
     public class DefaultNLogContextDbTarget : NLogContextDbTarget<DefaultLogSchema>
     {
-        public DefaultNLogContextDbTarget(string name, string schemaTableName) : base(name, schemaTableName)
-            => DoDefaultInitialization(this, name, schemaTableName);
+        public DefaultNLogContextDbTarget(string targetName, string schemaTableName) : base(targetName, schemaTableName)
+            => DoDefaultInitialization(this, schemaTableName);
 
         public static void DoDefaultInitialization<TDefaultLogSchema>(
-            NLogContextDbTarget<TDefaultLogSchema> target, 
-            string name, string schemaTableName)
+            NLogContextDbTarget<TDefaultLogSchema> target, string schemaTableName)
             where TDefaultLogSchema : DefaultLogSchema
         {
             // Set table creation and dropping commands

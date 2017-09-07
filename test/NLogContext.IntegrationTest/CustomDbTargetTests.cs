@@ -80,7 +80,7 @@ namespace NLogContext.IntegrationTest
             var target = new NLogContextDbTarget<DefaultLogSchemaWithUsername>(targetName, _schemaTableName);
 
             // Initialize DefaultSchema fields
-            DefaultNLogContextDbTarget.DoDefaultInitialization(target, targetName, _schemaTableName);
+            DefaultNLogContextDbTarget.DoDefaultInitialization(target, _schemaTableName);
 
             // Tell the custom target to get the Username-value from a gdc-entry for each log row
             var columnName = withColumnNameFunc(target);
@@ -93,10 +93,10 @@ namespace NLogContext.IntegrationTest
                 IgnoreFailures = false
             });
 
-            NLogContextDbTargetSetter.SetTarget(target, targetName, _connectionString, _schemaTableName);
-            GlobalDiagnosticsContext.Set(UsernameIdentifier, testUsername);
+            NLogContextDbTargetSetter.SetTarget(target, _connectionString);
 
             // Act
+            GlobalDiagnosticsContext.Set(UsernameIdentifier, testUsername);
             DoWithContext(logger => logger.Info(testMsg));
 
             // Assert
