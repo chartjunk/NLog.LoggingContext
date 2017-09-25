@@ -2,7 +2,6 @@
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NLog;
 using NLog.Targets;
@@ -64,7 +63,7 @@ namespace NLogContext.IntegrationTest
                 {
                     Expression<Func<DefaultLogSchemaWithUsername, string>> schemaExpression = r => r.SchemaUsername;
                     target.WithColumn("${gdc:item=" + UsernameIdentifier + "}", schemaExpression);
-                    return ((schemaExpression.Body as MemberExpression).Member as PropertyInfo).Name;
+                    return "SchemaUsername";
                 },
                 getActualUsernameFunc: logRow => logRow.SchemaUsername);
 
