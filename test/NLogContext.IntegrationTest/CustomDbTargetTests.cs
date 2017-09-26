@@ -3,15 +3,14 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Joona.NLogContext.IntegrationTest.SQLite;
+using Joona.NLogContext.Targets;
+using Joona.NLogContext.TestUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NLog;
 using NLog.Targets;
-using NLogContext.IntegrationTest.SQLite;
-using NLogContext.Targets;
-using NLogContext.TestUtils;
-using static NLogContext.TestUtils.ContextUtils;
 
-namespace NLogContext.IntegrationTest
+namespace Joona.NLogContext.IntegrationTest
 {
     [TestClass]
     public class CustomDbTargetTests
@@ -98,7 +97,7 @@ namespace NLogContext.IntegrationTest
 
             // Act
             GlobalDiagnosticsContext.Set(UsernameIdentifier, testUsername);
-            DoWithContext(logger => logger.Info(testMsg));
+            ContextUtils.DoWithContext(logger => logger.Info(testMsg));
 
             // Assert
             var logRow = _access.GetLogRows().Single();

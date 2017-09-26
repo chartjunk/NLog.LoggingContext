@@ -1,13 +1,12 @@
 ﻿using System;
-using NLog.Targets;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using NLog.Layouts;
-using static NLogContext.Identifiers;
+using NLog.Targets;
 
-namespace NLogContext.Targets
+namespace Joona.NLogContext.Targets
 {
     public class NLogContextDbTarget<TLogSchema> : DatabaseTarget
     {

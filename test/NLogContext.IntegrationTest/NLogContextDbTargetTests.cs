@@ -1,10 +1,8 @@
-﻿using System;
+﻿using System.Linq;
+using Joona.NLogContext.TestUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NLog;
-using System.Linq;
-using static NLogContext.TestUtils.ContextUtils;
 
-namespace NLogContext.IntegrationTest
+namespace Joona.NLogContext.IntegrationTest
 {
     [TestClass]
     public class NLogContextDbTargetTests
@@ -44,7 +42,7 @@ namespace NLogContext.IntegrationTest
             var testMessage = "Hello World";
 
             // Act
-            DoWithContext(logger => logger.Info(testMessage));
+            ContextUtils.DoWithContext(logger => logger.Info(testMessage));
 
             // Assert
             var logRow = _access.GetLogRows().Single();
@@ -59,7 +57,7 @@ namespace NLogContext.IntegrationTest
             var testMessage2 = "Bar";
 
             // Act
-            DoWithContext(logger =>
+            ContextUtils.DoWithContext(logger =>
             {
                 logger.Info(testMessage1);
                 logger.Info(testMessage2);
@@ -81,8 +79,8 @@ namespace NLogContext.IntegrationTest
             var testMessage2 = "Bar";
 
             // Act
-            DoWithContext(logger => logger.Info(testMessage1));
-            DoWithContext(logger => logger.Info(testMessage2));
+            ContextUtils.DoWithContext(logger => logger.Info(testMessage1));
+            ContextUtils.DoWithContext(logger => logger.Info(testMessage2));
 
             // Assert
             var logRows = _access.GetLogRows();
@@ -103,10 +101,10 @@ namespace NLogContext.IntegrationTest
             var context2Name = "Context2";
 
             // Act
-            DoWithContext(context1Name, logger1 => 
+            ContextUtils.DoWithContext(context1Name, logger1 => 
             {
                 logger1.Info(testMessage1);
-                DoWithContext(context2Name, logger2 =>
+                ContextUtils.DoWithContext(context2Name, logger2 =>
                 {
                     logger1.Info(testMessage2);
                     logger2.Info(testMessage3);

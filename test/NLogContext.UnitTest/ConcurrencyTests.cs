@@ -1,12 +1,10 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NLogContext.UnitTest.MethodCallTargeting;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using static NLogContext.TestUtils.ContextUtils;
-using System.Threading;
-using System.Linq;
+using Joona.NLogContext.TestUtils;
+using Joona.NLogContext.UnitTest.MethodCallTargeting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace NLogContext.UnitTest
+namespace Joona.NLogContext.UnitTest
 {
     [TestClass]
     public class ConcurrencyTests
@@ -46,11 +44,11 @@ namespace NLogContext.UnitTest
                 Task.Run(() =>
                 {
                     Task.Delay(100).Wait();
-                    DoWithContext(ctxName1, logger => logger.Info(testMsg1));
+                    ContextUtils.DoWithContext(ctxName1, logger => logger.Info(testMsg1));
                 }),
                 Task.Run(() =>
                 {
-                    DoWithContext(ctxName2, logger => logger.Info(testMsg2));
+                    ContextUtils.DoWithContext(ctxName2, logger => logger.Info(testMsg2));
                     Task.Delay(100).Wait();
                 }));
 

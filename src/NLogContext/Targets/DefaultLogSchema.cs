@@ -1,6 +1,4 @@
-﻿using NLog.LayoutRenderers;
-
-namespace NLogContext.Targets
+﻿namespace Joona.NLogContext.Targets
 {
     public class DefaultLogSchema
     {

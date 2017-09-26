@@ -1,13 +1,11 @@
-﻿using NLog;
-using NLog.Config;
-using NLog.Targets;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using static NLogContext.Layouts;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 
-namespace NLogContext.UnitTest.MethodCallTargeting
+namespace Joona.NLogContext.UnitTest.MethodCallTargeting
 {
     internal static class NLogContextMethodCallTargetSetter
     {

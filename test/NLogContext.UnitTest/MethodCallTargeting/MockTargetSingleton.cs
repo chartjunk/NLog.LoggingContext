@@ -1,11 +1,7 @@
-﻿using NLogContext.TestUtils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Joona.NLogContext.TestUtils;
 
-namespace NLogContext.UnitTest.MethodCallTargeting
+namespace Joona.NLogContext.UnitTest.MethodCallTargeting
 {
     public class MockTargetSingleton
     {

@@ -1,7 +1,6 @@
-﻿using System;
-using NLog.Targets;
+﻿using NLog.Targets;
 
-namespace NLogContext.Targets
+namespace Joona.NLogContext.Targets
 {
     public class DefaultNLogContextDbTarget : NLogContextDbTarget<DefaultLogSchema>
     {

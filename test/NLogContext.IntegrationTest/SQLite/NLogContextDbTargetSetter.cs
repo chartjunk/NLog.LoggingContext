@@ -1,10 +1,10 @@
-﻿using NLog;
+﻿using System.Linq;
+using Joona.NLogContext.Targets;
+using NLog;
 using NLog.Config;
 using NLog.Targets;
-using NLogContext.Targets;
-using System.Linq;
 
-namespace NLogContext.IntegrationTest.SQLite
+namespace Joona.NLogContext.IntegrationTest.SQLite
 {
     internal static class NLogContextDbTargetSetter
     {

@@ -1,9 +1,7 @@
-﻿using NLog;
-using NLogContext.TestUtils;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Joona.NLogContext.TestUtils;
 
-namespace NLogContext.UnitTest
+namespace Joona.NLogContext.UnitTest.MethodCallTargeting
 {
     internal class MockTarget
     {

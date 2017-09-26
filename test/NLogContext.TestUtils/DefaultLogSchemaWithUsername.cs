@@ -1,6 +1,6 @@
-﻿using NLogContext.Targets;
+﻿using Joona.NLogContext.Targets;
 
-namespace NLogContext.TestUtils
+namespace Joona.NLogContext.TestUtils
 {
     public class DefaultLogSchemaWithUsername : DefaultLogSchema
     {

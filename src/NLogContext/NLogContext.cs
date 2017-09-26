@@ -1,18 +1,17 @@
 ﻿using System;
 using NLog;
-using static NLogContext.Identifiers;
 
-namespace NLogContext
+namespace Joona.NLogContext
 {
     public class NLogContext : IDisposable
     {
-        internal static string ContextId { get => GetMdlcValue(ContextIdIdentifier); set => SetMdlcValue(ContextIdIdentifier, value); }
-        internal static string ContextName { get => GetMdlcValue(ContextNameIdentifier); set => SetMdlcValue(ContextNameIdentifier, value); }
-        internal static string ParentContextId { get => GetMdlcValue(ParentContextIdIdentifier); set => SetMdlcValue(ParentContextIdIdentifier, value); }
+        internal static string ContextId { get => GetMdlcValue(Identifiers.ContextIdIdentifier); set => SetMdlcValue(Identifiers.ContextIdIdentifier, value); }
+        internal static string ContextName { get => GetMdlcValue(Identifiers.ContextNameIdentifier); set => SetMdlcValue(Identifiers.ContextNameIdentifier, value); }
+        internal static string ParentContextId { get => GetMdlcValue(Identifiers.ParentContextIdIdentifier); set => SetMdlcValue(Identifiers.ParentContextIdIdentifier, value); }
         internal string ParentContextName { get; set; }
         internal string ParentParentContextId { get; set; }
         internal string ParentParentContextName { get; set; }
-        internal string TopmostParentContextId { get => GetMdlcValue(TopmostParentContextIdIdentifier); set => SetMdlcValue(TopmostParentContextIdIdentifier, value); }
+        internal string TopmostParentContextId { get => GetMdlcValue(Identifiers.TopmostParentContextIdIdentifier); set => SetMdlcValue(Identifiers.TopmostParentContextIdIdentifier, value); }
 
         public NLogContext(string contextName)
         {

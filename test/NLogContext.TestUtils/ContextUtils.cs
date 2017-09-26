@@ -1,7 +1,7 @@
-﻿using NLog;
-using System;
+﻿using System;
+using NLog;
 
-namespace NLogContext.TestUtils
+namespace Joona.NLogContext.TestUtils
 {
     public static class ContextUtils
     {

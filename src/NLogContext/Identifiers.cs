@@ -1,4 +1,4 @@
-﻿namespace NLogContext
+﻿namespace Joona.NLogContext
 {
     public class Identifiers
     {
