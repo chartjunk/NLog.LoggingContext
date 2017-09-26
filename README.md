@@ -9,3 +9,4 @@ install-package Joona.NLogContext
 
 + TODO: General manual
 + TODO: Manual for NLog target installation
++ TODO: Functionality for NLogContextDbTarget configuration with NLog.config
