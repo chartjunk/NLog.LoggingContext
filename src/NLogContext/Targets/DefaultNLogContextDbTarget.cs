@@ -2,8 +2,22 @@
 
 namespace Joona.NLogContext.Targets
 {
+    [Target("DefaultNLogContextDbTarget")]
     public sealed class DefaultNLogContextDbTarget : NLogContextDbTarget<DefaultLogSchema>
     {
+        internal static string GetInstallCommandSql(string schemaTableName) => 
+            $"CREATE TABLE {schemaTableName} ( " +
+            "  Id IDENTITY BIGINT PRIMARY KEY, " +
+            "  [ContextId] CHAR(36) NOT NULL, " +
+            "  [ContextName] VARCHAR(128), " +
+            "  [Level] VARCHAR(16), " +
+            "  [Message] NVARCHAR(MAX), " +
+            "  [Exception] NVARCHAR(MAX), " +
+            "  [InnerException] NVARCHAR(MAX), " +
+            "  [ParentContextId] CHAR(36), " +
+            "  [TopmostParentContextId] CHAR(36) NOT NULL " +
+            ") ";
+
         public override string SchemaTableName
         {
             get => base.SchemaTableName;
@@ -22,18 +36,7 @@ namespace Joona.NLogContext.Targets
             // NOTE: These are necessary only if you use target.Install(...) and target.Uninstall(...) explicitly
             target.InstallDdlCommands.Add(new DatabaseCommandInfo
             {
-                Text =
-                    $"CREATE TABLE {schemaTableName} ( " +
-                    $"  Id IDENTITY BIGINT PRIMARY KEY, " +
-                    $"  [ContextId] CHAR(36) NOT NULL, " +
-                    $"  [ContextName] VARCHAR(128), " +
-                    $"  [Level] VARCHAR(16), " +
-                    $"  [Message] NVARCHAR(MAX), " +
-                    $"  [Exception] NVARCHAR(MAX), " +
-                    $"  [InnerException] NVARCHAR(MAX), " +
-                    $"  [ParentContextId] CHAR(36), " +
-                    $"  [TopmostParentContextId] CHAR(36) NOT NULL " +
-                    $") ",
+                Text = GetInstallCommandSql(schemaTableName),
                 CommandType = System.Data.CommandType.Text,
                 IgnoreFailures = false
             });

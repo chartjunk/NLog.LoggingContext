@@ -41,5 +41,19 @@ namespace Joona.NLogContext.IntegrationTest.SQLite
             };
             SetTarget(target, connectionString);
         }
+
+        public static void InstallTarget<TLogSchema>(NLogContextDbTarget<TLogSchema> target)
+        {
+            // HACK: SQLite crashes if type is *CHAR(MAX) instead of *CHAR(123)
+            var command = target.InstallDdlCommands.First().Text.ToString().Replace("CHAR(MAX)", "CHAR(123)").Replace("'", "");
+            var newCommand = new DatabaseCommandInfo
+            {
+                Text = command,
+                CommandType = System.Data.CommandType.Text,
+                IgnoreFailures = false
+            };
+            target.InstallDdlCommands[0] = newCommand;
+            target.Install(new InstallationContext { IgnoreFailures = false });
+        }
     }
 }

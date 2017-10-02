@@ -78,13 +78,14 @@
     <Compile Include="SQLite\NLogContextDbTargetSetter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CustomDbTargetTests.cs" />
+    <Compile Include="AssemblyExtensionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <Content Include="NLog.config">
+    <Content Include="NLogConfigs\Extended.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="NLog.xsd">
+    <None Include="NLogConfigs\NLog.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
