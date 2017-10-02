@@ -10,18 +10,18 @@ namespace Joona.NLogContext.Targets
 {
     public class NLogContextDbTarget<TLogSchema> : DatabaseTarget
     {
+        public virtual string SchemaTableName { get; set; }
+
         private class InsertParameterPair
         {
             public string InsertParamenterName { get; set; }
             public string TableColumnName { get; set; }
         }
 
-        private readonly string _schemaTableName;
         private List<InsertParameterPair> InsertParameterPairs { get; } = new List<InsertParameterPair>();
 
-        public NLogContextDbTarget(string name, string schemaTableName) : base(name)
+        public NLogContextDbTarget()
         {
-            _schemaTableName = schemaTableName;
             CommandType = System.Data.CommandType.Text;
         }
 
@@ -63,7 +63,7 @@ namespace Joona.NLogContext.Targets
         {
             var columns = string.Join(",", InsertParameterPairs.Select(p => "[" + p.TableColumnName + "]"));
             var parameters = string.Join(",", InsertParameterPairs.Select(p => "NULLIF(@" + p.InsertParamenterName + ",'')"));
-            var commandText = $"INSERT INTO {_schemaTableName} (" + columns + ") VALUES (" + parameters + ")";
+            var commandText = $"INSERT INTO {SchemaTableName} (" + columns + ") VALUES (" + parameters + ")";
             CommandText = commandText;
         }
     }

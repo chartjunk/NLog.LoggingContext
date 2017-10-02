@@ -34,7 +34,11 @@ namespace Joona.NLogContext.IntegrationTest.SQLite
 
         public static void SetTarget(string targetName, string connectionString, string schemaTableName)
         {
-            var target = new DefaultNLogContextDbTarget(targetName, schemaTableName);
+            var target = new DefaultNLogContextDbTarget
+            {
+                Name = targetName,
+                SchemaTableName = schemaTableName
+            };
             SetTarget(target, connectionString);
         }
     }

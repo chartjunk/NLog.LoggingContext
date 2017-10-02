@@ -77,7 +77,11 @@ namespace Joona.NLogContext.IntegrationTest
             var testMsg = "Hallo world!";
 
             // Create custom target with an extra StringUsername column
-            var target = new NLogContextDbTarget<DefaultLogSchemaWithUsername>(targetName, _schemaTableName);
+            var target = new NLogContextDbTarget<DefaultLogSchemaWithUsername>
+            {
+                Name = targetName,
+                SchemaTableName = _schemaTableName
+            };
 
             // Initialize DefaultSchema fields
             DefaultNLogContextDbTarget.DoDefaultInitialization(target, _schemaTableName);

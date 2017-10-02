@@ -2,10 +2,17 @@
 
 namespace Joona.NLogContext.Targets
 {
-    public class DefaultNLogContextDbTarget : NLogContextDbTarget<DefaultLogSchema>
+    public sealed class DefaultNLogContextDbTarget : NLogContextDbTarget<DefaultLogSchema>
     {
-        public DefaultNLogContextDbTarget(string targetName, string schemaTableName) : base(targetName, schemaTableName)
-            => DoDefaultInitialization(this, schemaTableName);
+        public override string SchemaTableName
+        {
+            get => base.SchemaTableName;
+            set
+            {
+                base.SchemaTableName = value;
+                DoDefaultInitialization(this, value);
+            }
+        }
 
         public static void DoDefaultInitialization<TDefaultLogSchema>(
             NLogContextDbTarget<TDefaultLogSchema> target, string schemaTableName)
