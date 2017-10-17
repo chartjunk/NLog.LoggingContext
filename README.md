@@ -4,7 +4,7 @@ A custom NLog target for effortless SQL database logging included.
 
 Available via NPM
 ```
-install-package Joona.NLogContext
+install-package NLog.LoggingContext
 ```
 
 + TODO: General manual
