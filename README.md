@@ -1,4 +1,4 @@
-# NLogContext
+# NLog.LoggingContext
 Library for grouping your NLog log entries by their respective contexts. Find all related log entries by their context ids - instead of timestamps.
 A custom NLog target for effortless SQL database logging included. 
 
