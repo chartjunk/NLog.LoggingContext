@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using NLog.Config;
 using NLog.Layouts;
 using NLog.Targets;
 
 namespace NLog.LoggingContext.Targets
 {
     public class LoggingContextDbTarget<TLogSchema> : DatabaseTarget
-    {
+    {        
         public virtual string SchemaTableName { get; set; }
+
+        public string SharedConfigSource { get; set; } = "ConfigurationManager";
 
         private class InsertParameterPair
         {
@@ -23,6 +27,22 @@ namespace NLog.LoggingContext.Targets
         public LoggingContextDbTarget()
         {
             CommandType = System.Data.CommandType.Text;
+            if(SharedConfigSource == "ConfigurationManager")
+                ConfigureSharedConfigurationUsingConfigurationManager();
+        }
+
+        public virtual void ConfigureSharedConfigurationUsingConfigurationManager()
+        {
+            var appSettings = new Internal.ConfigurationManager().AppSettings;
+            var connectionStringKey = "NLog.LoggingContext:ConnectionString";
+            var connectionStringNameKey = "NLog.LoggingContext:ConnectionStringName";
+            var dbProviderKey = "NLog.LoggingContext:DbProvider";
+            if (appSettings.AllKeys.Contains(connectionStringKey))
+                ConnectionString = appSettings.Get(connectionStringKey);
+            if (appSettings.AllKeys.Contains(connectionStringNameKey))
+                ConnectionString = appSettings.Get(connectionStringNameKey);
+            if (appSettings.AllKeys.Contains(dbProviderKey))
+                DBProvider = appSettings.Get(dbProviderKey);
         }
 
         public LoggingContextDbTarget<TLogSchema> SetColumn(

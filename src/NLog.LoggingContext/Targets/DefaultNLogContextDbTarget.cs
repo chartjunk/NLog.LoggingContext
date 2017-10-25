@@ -31,16 +31,7 @@ namespace NLog.LoggingContext.Targets
 
         public DefaultLoggingContextDbTarget() : base()
         {
-            var appSettings = new Internal.ConfigurationManager().AppSettings;
-            var connectionStringKey = "NLog.LoggingContext:ConnectionString";
-            var connectionStringNameKey = "NLog.LoggingContext:ConnectionStringName";
-            var dbProviderKey = "NLog.LoggingContext:DbProvider";
-            if (appSettings.AllKeys.Contains(connectionStringKey))
-                ConnectionString = appSettings.Get(connectionStringKey);
-            if (appSettings.AllKeys.Contains(connectionStringNameKey))
-                ConnectionString = appSettings.Get(connectionStringNameKey);
-            if (appSettings.AllKeys.Contains(dbProviderKey))
-                DBProvider = appSettings.Get(dbProviderKey);
+            
         }
 
         public static void DoDefaultInitialization<TDefaultLogSchema>(
