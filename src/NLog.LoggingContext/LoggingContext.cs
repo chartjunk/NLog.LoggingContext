@@ -4,13 +4,13 @@ namespace NLog.LoggingContext
 {
     public class LoggingContext : IDisposable
     {
-        internal static string ContextId { get => GetMdlcValue(Identifiers.ContextIdIdentifier); set => SetMdlcValue(Identifiers.ContextIdIdentifier, value); }
-        internal static string ContextName { get => GetMdlcValue(Identifiers.ContextNameIdentifier); set => SetMdlcValue(Identifiers.ContextNameIdentifier, value); }
-        internal static string ParentContextId { get => GetMdlcValue(Identifiers.ParentContextIdIdentifier); set => SetMdlcValue(Identifiers.ParentContextIdIdentifier, value); }
-        internal string ParentContextName { get; set; }
-        internal string ParentParentContextId { get; set; }
-        internal string ParentParentContextName { get; set; }
-        internal string TopmostParentContextId { get => GetMdlcValue(Identifiers.TopmostParentContextIdIdentifier); set => SetMdlcValue(Identifiers.TopmostParentContextIdIdentifier, value); }
+        public static string ContextId { get => GetMdlcValue(Identifiers.ContextIdIdentifier); internal set => SetMdlcValue(Identifiers.ContextIdIdentifier, value); }
+        public static string ContextName { get => GetMdlcValue(Identifiers.ContextNameIdentifier); internal set => SetMdlcValue(Identifiers.ContextNameIdentifier, value); }
+        public static string ParentContextId { get => GetMdlcValue(Identifiers.ParentContextIdIdentifier); internal set => SetMdlcValue(Identifiers.ParentContextIdIdentifier, value); }
+        public string ParentContextName { get; internal set; }
+        public string ParentParentContextId { get; internal set; }
+        public string ParentParentContextName { get; internal set; }
+        public string TopmostParentContextId { get => GetMdlcValue(Identifiers.TopmostParentContextIdIdentifier); internal set => SetMdlcValue(Identifiers.TopmostParentContextIdIdentifier, value); }
 
         public LoggingContext(string contextName)
         {
