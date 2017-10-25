@@ -25,7 +25,7 @@ namespace NLog.LoggingContext.Targets
             CommandType = System.Data.CommandType.Text;
         }
 
-        public LoggingContextDbTarget<TLogSchema> WithColumn(
+        public LoggingContextDbTarget<TLogSchema> SetColumn(
             Layout sourceLayout, string targetTableColumnName) 
         {
             AddColumn(sourceLayout, targetTableColumnName);
@@ -33,7 +33,7 @@ namespace NLog.LoggingContext.Targets
             return this;
         }
 
-        public LoggingContextDbTarget<TLogSchema> WithColumn<TColumn>(
+        public LoggingContextDbTarget<TLogSchema> SetColumn<TColumn>(
             Layout sourceLayout,
             Expression<Func<TLogSchema, TColumn>> targetTableColumnExpression)
         {
