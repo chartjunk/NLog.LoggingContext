@@ -33,9 +33,12 @@ namespace NLog.LoggingContext.Targets
         {
             var appSettings = new NLog.Internal.ConfigurationManager().AppSettings;
             var connectionStringKey = "LoggingContext:ConnectionString";
+            var connectionStringNameKey = "LoggingContext:ConnectionStringName";
             var dbProviderKey = "LoggingContext:DbProvider";
             if (appSettings.AllKeys.Contains(connectionStringKey))
                 ConnectionString = appSettings.Get(connectionStringKey);
+            if (appSettings.AllKeys.Contains(connectionStringNameKey))
+                ConnectionString = appSettings.Get(connectionStringNameKey);
             if (appSettings.AllKeys.Contains(dbProviderKey))
                 DBProvider = appSettings.Get(dbProviderKey);
         }
