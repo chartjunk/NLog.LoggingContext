@@ -49,7 +49,7 @@ namespace NLog.LoggingContext.IntegrationTest
                 withColumnNameFunc: target =>
                 {
                     var columnName = "StringUsername";
-                    target.WithColumn("${gdc:item=" + UsernameIdentifier + "}", columnName);
+                    target.SetColumn("${gdc:item=" + UsernameIdentifier + "}", columnName);
                     return columnName;
                 },
                 getActualUsernameFunc: logRow => logRow.StringUsername);
@@ -61,7 +61,7 @@ namespace NLog.LoggingContext.IntegrationTest
                 withColumnNameFunc: target =>
                 {
                     Expression<Func<DefaultLogSchemaWithUsername, string>> schemaExpression = r => r.SchemaUsername;
-                    target.WithColumn("${gdc:item=" + UsernameIdentifier + "}", schemaExpression);
+                    target.SetColumn("${gdc:item=" + UsernameIdentifier + "}", schemaExpression);
                     return ((schemaExpression.Body as MemberExpression).Member as PropertyInfo).Name;
                 },
                 getActualUsernameFunc: logRow => logRow.SchemaUsername);
