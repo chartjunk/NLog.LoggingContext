@@ -11,10 +11,17 @@ namespace NLog.LoggingContext.IntegrationTest
     public class AssemblyExtensionTests
     {
         [TestMethod]
-        public void AddTargetWithNLogConfigFile()
+        public void AddTargetWithExtendedNLogConfigFile() => AddTargetWithNLogConfigFile(
+            ".\\NLogConfigs\\Extended.config", true);
+
+        [TestMethod]
+        public void AddTargetWithExtendedNLogConfigFileWithSharedConfig() => AddTargetWithNLogConfigFile(
+            ".\\NLogConfigs\\ExtendedWithSharedConfig.config", true);
+
+        public void AddTargetWithNLogConfigFile(string file, bool getCsFromTarget)
         {
-            LogManager.Configuration = new XmlLoggingConfiguration(".\\NLogConfigs\\Extended.config");
-            var target = LogManager.Configuration.AllTargets.Single() as DefaultLoggingContextDbTarget;
+            LogManager.Configuration = new XmlLoggingConfiguration(file);
+            var target = LogManager.Configuration.AllTargets.Single() as DefaultLoggingContextDbTarget;            
             var connectionString = target.ConnectionString.Render(new LogEventInfo());
             using (var access = new Access(connectionString, target.SchemaTableName))
             {

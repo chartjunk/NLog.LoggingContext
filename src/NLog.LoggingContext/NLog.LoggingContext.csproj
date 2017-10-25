@@ -1,12 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.3;net40;net45;net46</TargetFrameworks>
+    <TargetFrameworks>net40;net45;net46</TargetFrameworks>
   </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
-    <PackageReference Include="nlog" Version="5.0.0-beta10" />
-  </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net40' OR '$(TargetFramework)' == 'net45' OR '$(TargetFramework)' == 'net46'">
     <PackageReference Include="nlog" Version="4.4" />

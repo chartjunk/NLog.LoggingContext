@@ -1,9 +1,10 @@
-﻿using NLog.Targets;
+﻿using System.Linq;
+using NLog.Targets;
 
 namespace NLog.LoggingContext.Targets
 {
     [Target("DefaultLoggingContextDbTarget")]
-    public sealed class DefaultLoggingContextDbTarget : LoggingContextDbTarget<DefaultLogSchema>
+    public class DefaultLoggingContextDbTarget : LoggingContextDbTarget<DefaultLogSchema>
     {
         internal static string GetInstallCommandSql(string schemaTableName) => 
             $"CREATE TABLE {schemaTableName} ( " +
@@ -26,6 +27,17 @@ namespace NLog.LoggingContext.Targets
                 base.SchemaTableName = value;
                 DoDefaultInitialization(this, value);
             }
+        }
+
+        public DefaultLoggingContextDbTarget() : base()
+        {
+            var appSettings = new NLog.Internal.ConfigurationManager().AppSettings;
+            var connectionStringKey = "LoggingContext:ConnectionString";
+            var dbProviderKey = "LoggingContext:DbProvider";
+            if (appSettings.AllKeys.Contains(connectionStringKey))
+                ConnectionString = appSettings.Get(connectionStringKey);
+            if (appSettings.AllKeys.Contains(dbProviderKey))
+                DBProvider = appSettings.Get(dbProviderKey);
         }
 
         public static void DoDefaultInitialization<TDefaultLogSchema>(

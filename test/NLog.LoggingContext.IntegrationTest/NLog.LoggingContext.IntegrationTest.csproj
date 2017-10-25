@@ -85,6 +85,9 @@
     <Content Include="NLogConfigs\Extended.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="NLogConfigs\ExtendedWithSharedConfig.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="NLogConfigs\NLog.xsd">
       <SubType>Designer</SubType>
     </None>
