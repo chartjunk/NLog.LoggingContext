@@ -31,10 +31,10 @@ namespace NLog.LoggingContext.Targets
 
         public DefaultLoggingContextDbTarget() : base()
         {
-            var appSettings = new NLog.Internal.ConfigurationManager().AppSettings;
-            var connectionStringKey = "LoggingContext:ConnectionString";
-            var connectionStringNameKey = "LoggingContext:ConnectionStringName";
-            var dbProviderKey = "LoggingContext:DbProvider";
+            var appSettings = new Internal.ConfigurationManager().AppSettings;
+            var connectionStringKey = "NLog.LoggingContext:ConnectionString";
+            var connectionStringNameKey = "NLog.LoggingContext:ConnectionStringName";
+            var dbProviderKey = "NLog.LoggingContext:DbProvider";
             if (appSettings.AllKeys.Contains(connectionStringKey))
                 ConnectionString = appSettings.Get(connectionStringKey);
             if (appSettings.AllKeys.Contains(connectionStringNameKey))
