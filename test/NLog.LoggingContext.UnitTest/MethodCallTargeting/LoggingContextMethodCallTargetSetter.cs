@@ -24,12 +24,12 @@ namespace NLog.LoggingContext.UnitTest.MethodCallTargeting
                 new MethodCallParameter[]
                 {
                     new MethodCallParameter("contextId", Layouts.ContextIdLayout),
-                    new MethodCallParameter("contextName", Layouts.ContextNameLayout),
+                    new MethodCallParameter("contextName", Layouts.GetGdcLayout("ContextName")),
                     new MethodCallParameter("level", Layouts.LevelLayout),
-                    new MethodCallParameter("parentContextId", Layouts.ParentContextIdLayout),
+                    new MethodCallParameter("parentContextId", Layouts.GetGdcLayout("ParentContextId")),
                     new MethodCallParameter("dateTime", Layouts.DateTimeLayout),
                     new MethodCallParameter("exception", Layouts.ExceptionLayout),
-                    new MethodCallParameter("topmostParentContextId", Layouts.TopmostParentContextIdLayout),
+                    new MethodCallParameter("topmostParentContextId", Layouts.GetGdcLayout("TopmostParentContextId")),
                     new MethodCallParameter("message", Layouts.MessageLayout),
                 }
                 .Join(methodParameters.Select((pName, ix) => new { pName, ix }), a => a.Name, b => b.pName, (a, b) => new

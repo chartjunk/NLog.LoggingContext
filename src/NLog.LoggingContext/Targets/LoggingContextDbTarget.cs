@@ -5,12 +5,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using NLog.Config;
+using NLog.LayoutRenderers;
 using NLog.Layouts;
 using NLog.Targets;
 
 namespace NLog.LoggingContext.Targets
 {
-    public class LoggingContextDbTarget<TLogSchema> : DatabaseTarget
+    public class LoggingContextDbTarget<TLogSchema> : DatabaseTarget where TLogSchema : class
     {        
         public virtual string SchemaTableName { get; set; }
 
@@ -73,9 +74,27 @@ namespace NLog.LoggingContext.Targets
             Layout sourceLayout,
             Expression<Func<TLogSchema, TColumn>> targetTableColumnExpression)
         {
-            var propertyInfo = (targetTableColumnExpression?.Body as MemberExpression)?.Member as PropertyInfo;
+            var propertyInfo = ReflectionUtils.GetPropertyInfo(targetTableColumnExpression);
+            AddColumnWithPropertyInfo<TColumn>(sourceLayout, propertyInfo);
+        }
+
+        internal void AddGdcColumn<TColumn>(Expression<Func<TLogSchema, TColumn>> targetTableColumnExpression)
+        {
+            var propertyInfo = ReflectionUtils.GetPropertyInfo(targetTableColumnExpression);
+            var layout = Layouts.GetGdcLayout(propertyInfo.Name);
+            AddColumnWithPropertyInfo<TColumn>(layout, propertyInfo);
+        }
+
+        internal void AddGdcColumn(string targetTableColumnName)
+        {
+            var layout = Layouts.GetGdcLayout(targetTableColumnName);
+            AddColumn(layout, targetTableColumnName);
+        }
+
+        internal void AddColumnWithPropertyInfo<TColumn>(Layout sourceLayout, PropertyInfo propertyInfo)
+        {
             if (propertyInfo == null)
-                throw new ArgumentException("Parameter not PropertyExpression", nameof(targetTableColumnExpression));
+                throw new ArgumentException("Parameter not PropertyExpression");
             AddColumn(sourceLayout, propertyInfo.Name);
         }
 

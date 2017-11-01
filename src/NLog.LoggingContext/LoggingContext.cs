@@ -1,69 +1,61 @@
 ﻿using System;
+using System.Linq.Expressions;
+using NLog.LoggingContext.Extensions;
 
 namespace NLog.LoggingContext
 {
     public class LoggingContext : IDisposable
     {
-        public static string ContextId { get => GetMdlcValue(Identifiers.ContextIdIdentifier); internal set => SetMdlcValue(Identifiers.ContextIdIdentifier, value); }
-        public static string ContextName { get => GetMdlcValue(Identifiers.ContextNameIdentifier); internal set => SetMdlcValue(Identifiers.ContextNameIdentifier, value); }
-        public static string ParentContextId { get => GetMdlcValue(Identifiers.ParentContextIdIdentifier); internal set => SetMdlcValue(Identifiers.ParentContextIdIdentifier, value); }
-        public string ParentContextName { get; internal set; }
-        public string ParentParentContextId { get; internal set; }
-        public string ParentParentContextName { get; internal set; }
-        public string TopmostParentContextId { get => GetMdlcValue(Identifiers.TopmostParentContextIdIdentifier); internal set => SetMdlcValue(Identifiers.TopmostParentContextIdIdentifier, value); }
+        private string _parentContextId;
+        private string _parentParentContextId;
+        public string ContextId { get; }
 
         public LoggingContext(string contextName)
         {
-            var contextId = GenerateContextId();
-            PushContext(contextName, contextId);
-        }
+            ContextId = GenerateContextId();
+            PushContext(contextName);
+        }        
 
         public void Dispose() => PopContext();
-
-        internal void PushContext(string contextName, string contextId)
+    
+        internal void PushContext(string contextName)
         {
-            if (ContextId != null)
+            // Get parentContextId from parent context if one exists
+            _parentContextId = DiagnosticContextUtils.Mdlc.GetMdlcByShortKey("ContextId");
+            _parentParentContextId = DiagnosticContextUtils.Gdc.GetGdcByShortKey("ParentContextId", _parentContextId);
+
+            DiagnosticContextUtils.Mdlc.SetMdlcByShortKey("ContextId", ContextId);
+
+            // Roll parent context values to the current context as needed
+            if (_parentContextId != null)
             {
-                if (ParentContextId != null)
-                {
-                    ParentParentContextId = ParentContextId;
-                    ParentParentContextName = ParentContextName;
-                }
-                ParentContextId = ContextId;
-                ParentContextName = ContextName;
+                // Copy parent context values to the current context. This has to be done before setting the overriding values of the current context.
+                DiagnosticContextUtils.Gdc.CopyGdcValues(_parentContextId, ContextId);
+                DiagnosticContextUtils.Gdc.SetGdcByShortKey("ParentContextId", ContextId, _parentContextId);
             }
+            else
+                DiagnosticContextUtils.Gdc.SetGdcByShortKey("TopmostParentContextId", ContextId, ContextId);
 
-            if (TopmostParentContextId == null)
-                TopmostParentContextId = contextId;
-
-            ContextId = contextId;
-            ContextName = contextName;
+            if (_parentParentContextId != null)
+                DiagnosticContextUtils.Gdc.SetGdcByShortKey("ParentParentContextId", ContextId, _parentParentContextId);
+            
+            // Store the rest of the static context values
+            DiagnosticContextUtils.Gdc.SetGdcByShortKey("ContextName", ContextId, contextName);
         }
 
         internal void PopContext()
         {
-            if (TopmostParentContextId == ContextId)
-                TopmostParentContextId = null;
+            DiagnosticContextUtils.Gdc.RemoveGdcByContextId(ContextId);
 
-            ContextId = ParentContextId;
-            ContextName = ParentContextName;
-            ParentContextId = ParentParentContextId;
-            ParentContextName = ParentParentContextName;
-            ParentParentContextId = null;
-            ParentParentContextName = null;
+            // Restore context ids
+            if (_parentContextId != null)
+                DiagnosticContextUtils.Mdlc.SetMdlcByShortKey("ContextId", _parentContextId);
+            else            
+                DiagnosticContextUtils.Mdlc.RemoveMdlcByShortKey("ContextId");
+
+            // All parent context values should still reside at Gdc
         }
-
+        
         internal static string GenerateContextId() => Guid.NewGuid().ToString();
-        internal static string GetMdlcValue(string key)
-        {
-            return MappedDiagnosticsLogicalContext.Contains(key) ? MappedDiagnosticsLogicalContext.Get(key) : null;
-        }
-        internal static void SetMdlcValue(string key, string value)
-        {
-            if (value == null)
-                MappedDiagnosticsLogicalContext.Remove(key);
-            else
-                MappedDiagnosticsLogicalContext.Set(key, value);
-        }
     }
 }

@@ -53,9 +53,11 @@
   <ItemGroup>
     <Compile Include="BasicTests.cs" />
     <Compile Include="ConcurrencyTests.cs" />
+    <Compile Include="LoggingContextWithTests.cs" />
     <Compile Include="MethodCallTargeting\MockTarget.cs" />
     <Compile Include="MethodCallTargeting\MockTargetSingleton.cs" />
     <Compile Include="MethodCallTargeting\LoggingContextMethodCallTargetSetter.cs" />
+    <Compile Include="MockTargetSingletonTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

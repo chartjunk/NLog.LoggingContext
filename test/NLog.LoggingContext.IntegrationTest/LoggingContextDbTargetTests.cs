@@ -17,9 +17,9 @@ namespace NLog.LoggingContext.IntegrationTest
             var schemaTableName = "LogForTest_" + TestContext.TestName;
             var targetName = "MyTarget";
 
-            //NLog.Common.InternalLogger.LogToConsole = true;
-            //NLog.Common.InternalLogger.LogLevel = LogLevel.Trace;
-            //NLog.Common.InternalLogger.LogFile = "c:\\temp\\nlog-internal.txt";
+            NLog.Common.InternalLogger.LogToConsole = true;
+            NLog.Common.InternalLogger.LogLevel = LogLevel.Trace;
+            NLog.Common.InternalLogger.LogFile = "c:\\temp\\nlog-internal.txt";
 
             _access = new SQLite.Access(connectionString, schemaTableName);
             SQLite.LoggingContextDbTargetSetter.SetTarget(targetName, connectionString, schemaTableName);
@@ -108,7 +108,7 @@ namespace NLog.LoggingContext.IntegrationTest
                 {
                     logger1.Info(testMessage2);
                     logger2.Info(testMessage3);
-                });
+                });                
             });
 
             // Assert

@@ -48,14 +48,14 @@ namespace NLog.LoggingContext.Targets
             });
             target.UninstallDdlCommands.Add(new DatabaseCommandInfo { Text = $"DROP TABLE {schemaTableName}", CommandType = System.Data.CommandType.Text, IgnoreFailures = false });
 
-            // Set paremeters
+            // Set parameters
             target.AddColumn(Layouts.ContextIdLayout, d => d.ContextId);
-            target.AddColumn(Layouts.ContextNameLayout, d => d.ContextName);
+            target.AddGdcColumn(d => d.ContextName);            ;
             target.AddColumn(Layouts.LevelLayout, d => d.Level);
             target.AddColumn(Layouts.MessageLayout, d => d.Message);
             target.AddColumn(Layouts.ExceptionLayout, d => d.Exception);
-            target.AddColumn(Layouts.ParentContextIdLayout, d => d.ParentContextId);
-            target.AddColumn(Layouts.TopmostParentContextIdLayout, d => d.TopmostParentContextId);
+            target.AddGdcColumn(d => d.ParentContextId);
+            target.AddGdcColumn(d => d.TopmostParentContextId);
             target.RefreshInsertCommandText();
         }
     }

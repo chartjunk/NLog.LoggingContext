@@ -8,7 +8,7 @@ namespace NLog.LoggingContext.IntegrationTest.SQLite
     internal static class LoggingContextDbTargetSetter
     {
         public static void SetTarget<TLogSchema>(
-            LoggingContextDbTarget<TLogSchema> target, string connectionString)
+            LoggingContextDbTarget<TLogSchema> target, string connectionString) where TLogSchema : class
         {
             target.CommandType = System.Data.CommandType.Text;
             target.ConnectionString = connectionString;
@@ -41,7 +41,7 @@ namespace NLog.LoggingContext.IntegrationTest.SQLite
             SetTarget(target, connectionString);
         }
 
-        public static void InstallTarget<TLogSchema>(LoggingContextDbTarget<TLogSchema> target)
+        public static void InstallTarget<TLogSchema>(LoggingContextDbTarget<TLogSchema> target) where TLogSchema : class
         {
             // HACK: SQLite crashes if type is *CHAR(MAX) instead of *CHAR(123)
             var command = Enumerable.First<DatabaseCommandInfo>(target.InstallDdlCommands).Text.ToString().Replace("CHAR(MAX)", "CHAR(123)").Replace("'", "");
