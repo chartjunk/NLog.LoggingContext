@@ -52,22 +52,62 @@ namespace NLog.LoggingContext.IntegrationTest
                     target.SetColumn("${gdc:item=" + UsernameIdentifier + "}", columnName);
                     return columnName;
                 },
+                act: (testUsername, testMsg) =>
+                {
+                    GlobalDiagnosticsContext.Set(UsernameIdentifier, testUsername);
+                    ContextUtils.DoWithContext(logger => logger.Info(testMsg));
+                },
                 getActualUsernameFunc: logRow => logRow.StringUsername);
         
 
         [TestMethod]
-        public void TestCustomUsernameColumnExtensionWithSchemaPropertyExpression()
+        public void TestCustomUsernameColumnExtensionWithSchemaPropertyExpressionWithDirectGdcSetting()
             => TestCustomUsernameColumnExtension(
                 withColumnNameFunc: target =>
                 {
                     Expression<Func<DefaultLogSchemaWithUsername, string>> schemaExpression = r => r.SchemaUsername;
                     target.SetColumn("${gdc:item=" + UsernameIdentifier + "}", schemaExpression);
-                    return ((schemaExpression.Body as MemberExpression).Member as PropertyInfo).Name;
+                    return ReflectionUtils.GetPropertyInfo(schemaExpression).Name;
+                },
+                act: (testUsername, testMsg) =>
+                {
+                    GlobalDiagnosticsContext.Set(UsernameIdentifier, testUsername);
+                    ContextUtils.DoWithContext(logger => logger.Info(testMsg));
                 },
                 getActualUsernameFunc: logRow => logRow.SchemaUsername);
 
+
+        [TestMethod]
+        public void TestCustomUsernameColumnExtensionWithSchemaPropertyExpressionWithSchemaSetter()
+            => TestCustomUsernameColumnExtension(
+                withColumnNameFunc: target =>
+                {
+                    Expression<Func<DefaultLogSchemaWithUsername, string>> schemaExpression = r => r.SchemaUsername;
+                    target.SetGdcColumn(schemaExpression);
+                    return ReflectionUtils.GetPropertyInfo(schemaExpression).Name;
+                },
+                act: (testUsername, testMsg) => ContextUtils.DoWithContext(logger => logger.Info(testMsg), 
+                    getNewContext: cn => new LoggingContext(cn).WithSchema<DefaultLogSchemaWithUsername>(s => s.Set(f => f.SchemaUsername, testUsername))),
+                getActualUsernameFunc: logRow => logRow.SchemaUsername);
+
+
+        [TestMethod]
+        public void TestCustomUsernameColumnExtensionWithSchemaPropertyExpressionWithSet()
+            => TestCustomUsernameColumnExtension(
+                withColumnNameFunc: target =>
+                {
+                    Expression<Func<DefaultLogSchemaWithUsername, string>> schemaExpression = r => r.SchemaUsername;
+                    target.SetGdcColumn(schemaExpression);
+                    return ReflectionUtils.GetPropertyInfo(schemaExpression).Name;
+                },
+                act: (testUsername, testMsg) => ContextUtils.DoWithContext(logger => logger.Info(testMsg),
+                    getNewContext: cn => new LoggingContext(cn).Set<DefaultLogSchemaWithUsername, string>(s => s.SchemaUsername, testUsername)),
+                getActualUsernameFunc: logRow => logRow.SchemaUsername);
+
+
         public void TestCustomUsernameColumnExtension(
             Func<LoggingContextDbTarget<DefaultLogSchemaWithUsername>, string> withColumnNameFunc,
+            Action<string, string> act,
             Func<LogRow, string> getActualUsernameFunc)
         {
             // Assign
@@ -99,8 +139,7 @@ namespace NLog.LoggingContext.IntegrationTest
             LoggingContextDbTargetSetter.SetTarget<DefaultLogSchemaWithUsername>(target, _connectionString);
 
             // Act
-            GlobalDiagnosticsContext.Set(UsernameIdentifier, testUsername);
-            ContextUtils.DoWithContext(logger => logger.Info(testMsg));
+            act(testUsername, testMsg);
 
             // Assert
             var logRow = _access.GetLogRows().Single();

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq.Expressions;
-using NLog.LoggingContext.Extensions;
 
 namespace NLog.LoggingContext
 {

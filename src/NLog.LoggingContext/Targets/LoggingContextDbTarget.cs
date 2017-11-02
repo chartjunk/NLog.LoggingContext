@@ -63,9 +63,26 @@ namespace NLog.LoggingContext.Targets
             return this;
         }
 
+        public LoggingContextDbTarget<TLogSchema> SetGdcColumn(string targetTableColumnName)
+        {
+            AddGdcColumn(targetTableColumnName);
+            RefreshInsertCommandText();
+            return this;
+        }
+
+        public LoggingContextDbTarget<TLogSchema> SetGdcColumn<TColumn>(
+            Expression<Func<TLogSchema, TColumn>> targetTableColumnExpression)
+        {
+            AddGdcColumn(targetTableColumnExpression);
+            RefreshInsertCommandText();
+            return this;
+        }
+
         internal void AddColumn(Layout sourceLayout, string targetTableColumnName)
         {
-            var insertParameterName = "p_nlogctx_" + targetTableColumnName;
+            var insertParameterName = "p_NLog_LoggingContext_" + targetTableColumnName;
+            if (Parameters.Any(p => p.Name == insertParameterName))
+                Parameters.Remove(Parameters.Single(p => p.Name == insertParameterName));
             Parameters.Add(new DatabaseParameterInfo { Name = insertParameterName, Layout = sourceLayout });
             InsertParameterPairs.Add(new InsertParameterPair { InsertParamenterName = insertParameterName, TableColumnName = targetTableColumnName });
         }
