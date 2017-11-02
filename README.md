@@ -1,7 +1,7 @@
 # NLog.LoggingScope
 
 ### ENRICH your log entries with IDs...
-...that are uniform within a block of code
+...that are uniform within a block of code:
 
 ```C#
 using(new LoggingScope("MyScope"))
@@ -51,7 +51,7 @@ Resulting log entries:
 </table>
 <hr/>
 
-### IDs are unique for each LoggingContext instance
+For each LoggingScope instance, IDs are unique:
 
 ```C#
 public class MyApp
@@ -65,8 +65,8 @@ public class MyApp
 }
 
 var myApp = new MyApp();
-myApp.Execute()
-myApp.Execute()
+myApp.Execute();
+myApp.Execute();
 ```
 
 Resulting log entries:
@@ -88,6 +88,51 @@ Resulting log entries:
     <td>Lorem</td>
     <td>Trace</td>
     <td>Ipsum</td>
+  </tr>
+</table>
+<hr/>
+
+Nested scopes are attached to each other a their child-parent relation:
+```C#
+using(new LoggingScope("TheParent"))
+{
+  Logger.Debug("One");
+  using(new LoggingScope("TheChild"))
+  {
+    Logger.Debug("Two");
+  }
+  Logger.Debug("Three");
+}
+```
+Resulting log entries:
+<table>
+  <tr>
+    <th>ScopeId</th>
+    <th>ScopeName</th>
+    <th>ParentScopeId</th>
+    <th>Severity</th>
+    <th>Message</th>
+  </tr>
+  <tr>
+    <td>94bb82a3-7b63-4bb6-aa66-807f2a2d863d</td>
+    <td>TheParent</td>
+    <td/>
+    <td>Trace</td>
+    <td>One</td>
+  </tr>
+  <tr>
+    <td>75ccddf9-d596-4ceb-b2ae-fe63b02b8b1b</td>
+    <td>TheChild</td>
+    <td>94bb82a3-7b63-4bb6-aa66-807f2a2d863d</td>
+    <td>Trace</td>
+    <td>Three</td>
+  </tr>
+  <tr>
+    <td>94bb82a3-7b63-4bb6-aa66-807f2a2d863d</td>
+    <td>TheParent</td>
+    <td/>
+    <td>Trace</td>
+    <td>Three</td>
   </tr>
 </table>
 <hr/>
