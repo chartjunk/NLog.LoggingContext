@@ -94,11 +94,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\NLog.LoggingContext\NLog.LoggingScope.csproj">
+    <ProjectReference Include="..\..\src\NLog.LoggingScope\NLog.LoggingScope.csproj">
       <Project>{aace0af9-d2c6-4dee-9cd8-78c915ced96b}</Project>
       <Name>NLog.LoggingScope</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NLog.LoggingContext.TestUtils\NLog.LoggingScope.TestUtils.csproj">
+    <ProjectReference Include="..\NLog.LoggingScope.TestUtils\NLog.LoggingScope.TestUtils.csproj">
       <Project>{58e542fa-31f4-4e1f-a51d-5cc42b77c1de}</Project>
       <Name>NLog.LoggingScope.TestUtils</Name>
     </ProjectReference>
