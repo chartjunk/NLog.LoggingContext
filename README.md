@@ -110,28 +110,24 @@ Resulting log entries:
     <th>ScopeId</th>
     <th>ScopeName</th>
     <th>ParentScopeId</th>
-    <th>Severity</th>
     <th>Message</th>
   </tr>
   <tr>
     <td>94bb82a3-7b63-4bb6-aa66-807f2a2d863d</td>
     <td>TheParent</td>
     <td/>
-    <td>Trace</td>
     <td>One</td>
   </tr>
   <tr>
     <td>75ccddf9-d596-4ceb-b2ae-fe63b02b8b1b</td>
     <td>TheChild</td>
     <td>94bb82a3-7b63-4bb6-aa66-807f2a2d863d</td>
-    <td>Trace</td>
-    <td>Three</td>
+    <td>Two</td>
   </tr>
   <tr>
     <td>94bb82a3-7b63-4bb6-aa66-807f2a2d863d</td>
     <td>TheParent</td>
     <td/>
-    <td>Trace</td>
     <td>Three</td>
   </tr>
 </table>
