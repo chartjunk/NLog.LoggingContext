@@ -1,12 +1,55 @@
 # NLog.LoggingScope
-Library for grouping your NLog log entries by their respective scopes. Find all related log entries by their scope ids - instead of timestamps.
-A custom NLog target for effortless SQL database logging included. 
 
 Available via NPM
 ```
 install-package NLog.LoggingScope
 ```
 
-+ TODO: General manual
-+ TODO: Manual for NLog target installation
-+ TODO: Functionality for NLogContextDbTarget configuration with NLog.config
+#### Enrich your log entries with identifiers that match the scopes that the entries originate from
+
+```C#
+using(new LoggingScope("MyScope"))
+{
+  Logger.Debug("Hello");
+  Logger.Debug("World!");
+}
+
+using(new LoggingScope("AnotherScope"))
+{
+  Logger.Info("Fizz");
+  Logger.Info("Buzz");
+}
+```
+Resulting log entries:
+<table>
+  <tr>
+    <th>ScopeId</th>
+    <th>ScopeName</th>
+    <th>Severity</th>
+    <th>Message</th>
+  </tr>
+  <tr>
+    <td>4e4e92ee-6c6c-48b0-8dc3-04d2cc4d1f31</td>
+    <td>MyScope</td>
+    <td>Debug</td>
+    <td>Hello</td>
+  </tr>
+  <tr>
+    <td>4e4e92ee-6c6c-48b0-8dc3-04d2cc4d1f31</td>
+    <td>MyScope</td>
+    <td>Debug</td>
+    <td>World</td>
+  </tr>
+  <tr>
+    <td>f162e96b-9e64-4cc9-9e1d-f1105b32d204</td>
+    <td>AnotherScope</td>
+    <td>Info</td>
+    <td>Fizz</td>
+  </tr>
+  <tr>
+    <td>f162e96b-9e64-4cc9-9e1d-f1105b32d204</td>
+    <td>AnotherScope</td>
+    <td>Info</td>
+    <td>Buzz</td>
+  </tr>
+</table>
