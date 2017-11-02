@@ -58,9 +58,8 @@ using(new LoggingScope("AnotherScope"))
     <td>Buzz</td>
   </tr>
 </table>
-</br>
-
 Being unique, one is able to find out what happened in each block *during a single execution* by searching log entries by `ScopeId`.
+</br>
 
 ## For each scope instance, IDs are unique:
 
