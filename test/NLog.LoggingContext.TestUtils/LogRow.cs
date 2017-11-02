@@ -1,4 +1,4 @@
-﻿namespace NLog.LoggingContext.TestUtils
+﻿namespace NLog.LoggingScope.TestUtils
 {
     public class LogRow
     {

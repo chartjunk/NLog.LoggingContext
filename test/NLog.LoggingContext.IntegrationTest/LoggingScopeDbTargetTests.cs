@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NLog.LoggingContext.TestUtils;
+using NLog.LoggingScope.TestUtils;
 
-namespace NLog.LoggingContext.IntegrationTest
+namespace NLog.LoggingScope.IntegrationTest
 {
     [TestClass]
-    public class LoggingContextDbTargetTests
+    public class LoggingScopeDbTargetTests
     {
         public TestContext TestContext { get; set; }
         private SQLite.Access _access;
@@ -22,7 +22,7 @@ namespace NLog.LoggingContext.IntegrationTest
             NLog.Common.InternalLogger.LogFile = "c:\\temp\\nlog-internal.txt";
 
             _access = new SQLite.Access(connectionString, schemaTableName);
-            SQLite.LoggingContextDbTargetSetter.SetTarget(targetName, connectionString, schemaTableName);
+            SQLite.LoggingScopeDbTargetSetter.SetTarget(targetName, connectionString, schemaTableName);
         }
 
         [TestCleanup]
@@ -42,7 +42,7 @@ namespace NLog.LoggingContext.IntegrationTest
             var testMessage = "Hello World";
 
             // Act
-            ContextUtils.DoWithContext(logger => logger.Info(testMessage));
+            ScopeUtils.DoWithContext(logger => logger.Info(testMessage));
 
             // Assert
             var logRow = _access.GetLogRows().Single();
@@ -57,7 +57,7 @@ namespace NLog.LoggingContext.IntegrationTest
             var testMessage2 = "Bar";
 
             // Act
-            ContextUtils.DoWithContext(logger =>
+            ScopeUtils.DoWithContext(logger =>
             {
                 logger.Info(testMessage1);
                 logger.Info(testMessage2);
@@ -79,8 +79,8 @@ namespace NLog.LoggingContext.IntegrationTest
             var testMessage2 = "Bar";
 
             // Act
-            ContextUtils.DoWithContext(logger => logger.Info(testMessage1));
-            ContextUtils.DoWithContext(logger => logger.Info(testMessage2));
+            ScopeUtils.DoWithContext(logger => logger.Info(testMessage1));
+            ScopeUtils.DoWithContext(logger => logger.Info(testMessage2));
 
             // Assert
             var logRows = _access.GetLogRows();
@@ -101,10 +101,10 @@ namespace NLog.LoggingContext.IntegrationTest
             var context2Name = "Context2";
 
             // Act
-            ContextUtils.DoWithContext(context1Name, logger1 => 
+            ScopeUtils.DoWithContext(context1Name, logger1 => 
             {
                 logger1.Info(testMessage1);
-                ContextUtils.DoWithContext(context2Name, logger2 =>
+                ScopeUtils.DoWithContext(context2Name, logger2 =>
                 {
                     logger1.Info(testMessage2);
                     logger2.Info(testMessage3);

@@ -4,9 +4,9 @@ using System.Linq.Expressions;
 using NLog.Config;
 using NLog.Targets;
 
-namespace NLog.LoggingContext.UnitTest.MethodCallTargeting
+namespace NLog.LoggingScope.UnitTest.MethodCallTargeting
 {
-    internal static class LoggingContextMethodCallTargetSetter
+    internal static class LoggingScopeMethodCallTargetSetter
     {
         public static void SetTarget(string targetName, Expression<Action> staticMethodCall)
         {

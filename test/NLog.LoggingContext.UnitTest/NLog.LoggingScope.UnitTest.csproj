@@ -7,8 +7,8 @@
     <ProjectGuid>{016D549F-3B65-4A65-90C5-3E5C18DAF73E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NLog.LoggingContext.UnitTest</RootNamespace>
-    <AssemblyName>NLog.LoggingContext.UnitTest</AssemblyName>
+    <RootNamespace>NLog.LoggingScope.UnitTest</RootNamespace>
+    <AssemblyName>NLog.LoggingScope.UnitTest</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -55,7 +55,7 @@
     <Compile Include="ConcurrencyTests.cs" />
     <Compile Include="MethodCallTargeting\MockTarget.cs" />
     <Compile Include="MethodCallTargeting\MockTargetSingleton.cs" />
-    <Compile Include="MethodCallTargeting\LoggingContextMethodCallTargetSetter.cs" />
+    <Compile Include="MethodCallTargeting\LoggingScopeMethodCallTargetSetter.cs" />
     <Compile Include="MockTargetSingletonTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -63,13 +63,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NLog.LoggingContext.TestUtils\NLog.LoggingContext.TestUtils.csproj">
+    <ProjectReference Include="..\NLog.LoggingContext.TestUtils\NLog.LoggingScope.TestUtils.csproj">
       <Project>{58e542fa-31f4-4e1f-a51d-5cc42b77c1de}</Project>
-      <Name>NLog.LoggingContext.TestUtils</Name>
+      <Name>NLog.LoggingScope.TestUtils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\NLog.LoggingContext\NLog.LoggingContext.csproj">
+    <ProjectReference Include="..\..\src\NLog.LoggingContext\NLog.LoggingScope.csproj">
       <Project>{aace0af9-d2c6-4dee-9cd8-78c915ced96b}</Project>
-      <Name>NLog.LoggingContext</Name>
+      <Name>NLog.LoggingScope</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

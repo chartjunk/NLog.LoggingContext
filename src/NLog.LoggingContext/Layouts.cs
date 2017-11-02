@@ -1,6 +1,6 @@
 ﻿using NLog.Layouts;
 
-namespace NLog.LoggingContext
+namespace NLog.LoggingScope
 {
     public static class Layouts
     {

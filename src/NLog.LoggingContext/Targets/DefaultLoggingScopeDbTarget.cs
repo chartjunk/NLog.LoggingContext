@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using NLog.Targets;
 
-namespace NLog.LoggingContext.Targets
+namespace NLog.LoggingScope.Targets
 {
-    [Target("DefaultLoggingContextDbTarget")]
-    public class DefaultLoggingContextDbTarget : LoggingContextDbTarget<DefaultLogSchema>
+    [Target("DefaultLoggingScopeDbTarget")]
+    public class DefaultLoggingScopeDbTarget : LoggingScopeDbTarget<DefaultLogSchema>
     {
         internal static string GetInstallCommandSql(string schemaTableName) => 
             $"CREATE TABLE {schemaTableName} ( " +
@@ -29,13 +29,13 @@ namespace NLog.LoggingContext.Targets
             }
         }
 
-        public DefaultLoggingContextDbTarget() : base()
+        public DefaultLoggingScopeDbTarget() : base()
         {
             
         }
 
         public static void DoDefaultInitialization<TDefaultLogSchema>(
-            LoggingContextDbTarget<TDefaultLogSchema> target, string schemaTableName)
+            LoggingScopeDbTarget<TDefaultLogSchema> target, string schemaTableName)
             where TDefaultLogSchema : DefaultLogSchema
         {
             // Set table creation and dropping commands

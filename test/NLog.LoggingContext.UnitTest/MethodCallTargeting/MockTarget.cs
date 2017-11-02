@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using NLog.LoggingContext.TestUtils;
+using NLog.LoggingScope.TestUtils;
 
-namespace NLog.LoggingContext.UnitTest.MethodCallTargeting
+namespace NLog.LoggingScope.UnitTest.MethodCallTargeting
 {
     internal class MockTarget
     {

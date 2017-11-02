@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NLog.LoggingContext.UnitTest.MethodCallTargeting;
+using NLog.LoggingScope.UnitTest.MethodCallTargeting;
 
-namespace NLog.LoggingContext.UnitTest
+namespace NLog.LoggingScope.UnitTest
 {
     [TestClass]
     public class MockTargetSingletonTests
@@ -16,7 +16,7 @@ namespace NLog.LoggingContext.UnitTest
                 //NLog.Common.InternalLogger.LogFile = "c:\\temp\\nlog-internal.txt";
 
                 MockTargetSingleton.InitializeSingleton();
-                LoggingContextMethodCallTargetSetter.SetTarget("MockTarget",
+                LoggingScopeMethodCallTargetSetter.SetTarget("MockTarget",
                     () => MockTargetSingleton.Log(null, null, null, null, null, null, null, null));
             }
         }

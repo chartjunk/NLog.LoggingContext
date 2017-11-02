@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NLog.Config;
-using NLog.LoggingContext.IntegrationTest.SQLite;
-using NLog.LoggingContext.Targets;
-using NLog.LoggingContext.TestUtils;
+using NLog.LoggingScope.IntegrationTest.SQLite;
+using NLog.LoggingScope.Targets;
+using NLog.LoggingScope.TestUtils;
 
-namespace NLog.LoggingContext.IntegrationTest
+namespace NLog.LoggingScope.IntegrationTest
 {
     [TestClass]
     public class AssemblyExtensionTests
@@ -21,13 +21,13 @@ namespace NLog.LoggingContext.IntegrationTest
         public void AddTargetWithNLogConfigFile(string file, bool getCsFromTarget)
         {
             LogManager.Configuration = new XmlLoggingConfiguration(file);
-            var target = LogManager.Configuration.AllTargets.Single() as DefaultLoggingContextDbTarget;            
+            var target = LogManager.Configuration.AllTargets.Single() as DefaultLoggingScopeDbTarget;            
             var connectionString = target.ConnectionString.Render(new LogEventInfo());
             using (var access = new Access(connectionString, target.SchemaTableName))
             {
-                SQLite.LoggingContextDbTargetSetter.InstallTarget(target);
+                SQLite.LoggingScopeDbTargetSetter.InstallTarget(target);
                 var testMsg = "Hello world!";
-                ContextUtils.DoWithContext(logger => logger.Info(testMsg));
+                ScopeUtils.DoWithContext(logger => logger.Info(testMsg));
                 var actualMsg = access.GetLogRows().Single().Message;
                 Assert.AreEqual(testMsg, actualMsg);
             }

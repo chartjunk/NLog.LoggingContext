@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NLog.LoggingContext.TestUtils;
-using NLog.LoggingContext.UnitTest.MethodCallTargeting;
+using NLog.LoggingScope.TestUtils;
+using NLog.LoggingScope.UnitTest.MethodCallTargeting;
 
-namespace NLog.LoggingContext.UnitTest
+namespace NLog.LoggingScope.UnitTest
 {
     [TestClass]
     public class ConcurrencyTests
@@ -19,7 +19,7 @@ namespace NLog.LoggingContext.UnitTest
                 //NLog.Common.InternalLogger.LogFile = "c:\\temp\\nlog-internal.txt";
 
                 MockTargetSingleton.InitializeSingleton();
-                LoggingContextMethodCallTargetSetter.SetTarget("MockTarget", () => MockTargetSingleton.Log(null, null, null, null, null, null, null, null));
+                LoggingScopeMethodCallTargetSetter.SetTarget("MockTarget", () => MockTargetSingleton.Log(null, null, null, null, null, null, null, null));
             }
         }
 
@@ -44,11 +44,11 @@ namespace NLog.LoggingContext.UnitTest
                 Task.Run(() =>
                 {
                     Task.Delay(100).Wait();
-                    ContextUtils.DoWithContext(ctxName1, logger => logger.Info(testMsg1));
+                    ScopeUtils.DoWithContext(ctxName1, logger => logger.Info(testMsg1));
                 }),
                 Task.Run(() =>
                 {
-                    ContextUtils.DoWithContext(ctxName2, logger => logger.Info(testMsg2));
+                    ScopeUtils.DoWithContext(ctxName2, logger => logger.Info(testMsg2));
                     Task.Delay(100).Wait();
                 }));
 

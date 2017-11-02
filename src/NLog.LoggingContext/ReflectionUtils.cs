@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace NLog.LoggingContext
+namespace NLog.LoggingScope
 {
     internal static class ReflectionUtils
     {

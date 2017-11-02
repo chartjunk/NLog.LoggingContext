@@ -1,6 +1,6 @@
-﻿using NLog.LoggingContext.Targets;
+﻿using NLog.LoggingScope.Targets;
 
-namespace NLog.LoggingContext.TestUtils
+namespace NLog.LoggingScope.TestUtils
 {
     public class DefaultLogSchemaWithUsername : DefaultLogSchema
     {

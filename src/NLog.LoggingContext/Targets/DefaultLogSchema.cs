@@ -1,4 +1,4 @@
-﻿namespace NLog.LoggingContext.Targets
+﻿namespace NLog.LoggingScope.Targets
 {
     public class DefaultLogSchema
     {

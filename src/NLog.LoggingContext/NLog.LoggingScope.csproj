@@ -23,6 +23,8 @@
     <PackageTags>NLog logging context scope scoping identifier id</PackageTags>
     <PackageLicenseUrl>https://github.com/chartjunk/NLog.LoggingContext/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/chartjunk/NLog.LoggingContext</PackageProjectUrl>
+    <AssemblyName>NLog.LoggingScope</AssemblyName>
+    <RootNamespace>NLog.LoggingScope</RootNamespace>
   </PropertyGroup>
 
 </Project>

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Policy;
 
-namespace NLog.LoggingContext
+namespace NLog.LoggingScope
 {
     public static class DiagnosticContextUtils
     {
-        private static readonly string LoggingContextNamespacePrefix = "NLog.LoggingContext.";
+        private static readonly string LoggingScopeNamespacePrefix = "NLog.LoggingScope.";
 
         public static class Mdlc
         {
             public static string GetMdlcLongKey(string shortKey)
-                => LoggingContextNamespacePrefix + shortKey;
+                => LoggingScopeNamespacePrefix + shortKey;
 
             public static string GetMdlcByShortKey(string shortKey) => GetMdlcByLongLey(GetMdlcLongKey(shortKey));
 
@@ -39,7 +39,7 @@ namespace NLog.LoggingContext
 
             internal static Dictionary<string, string> GetMdlcs() =>
                 MappedDiagnosticsLogicalContext.GetNames()
-                    .Where(n => n.StartsWith(LoggingContextNamespacePrefix))
+                    .Where(n => n.StartsWith(LoggingScopeNamespacePrefix))
                     .ToDictionary(n => n, MappedDiagnosticsLogicalContext.Get);
         }
 
@@ -77,7 +77,7 @@ namespace NLog.LoggingContext
                 // TODO: Track context names within the context object and remove them straight by their names on disposal
                 GlobalDiagnosticsContext.GetNames().Where(n =>
                 
-                    n.StartsWith(LoggingContextNamespacePrefix)
+                    n.StartsWith(LoggingScopeNamespacePrefix)
                     && n.EndsWith(":" + contextId)
 
                 ).ToList().ForEach(GlobalDiagnosticsContext.Remove);
@@ -88,7 +88,7 @@ namespace NLog.LoggingContext
                 var fromContextIdLength = fromContextId.Length;
                 GlobalDiagnosticsContext.GetNames().Where(n =>
                 
-                    n.StartsWith(LoggingContextNamespacePrefix)
+                    n.StartsWith(LoggingScopeNamespacePrefix)
                     && n.EndsWith(":" + fromContextId)
 
                 ).ToList().ForEach(n =>
@@ -100,7 +100,7 @@ namespace NLog.LoggingContext
 
             internal static Dictionary<string, string> GetGdcs() =>
                 GlobalDiagnosticsContext.GetNames()
-                    .Where(n => n.StartsWith(LoggingContextNamespacePrefix))
+                    .Where(n => n.StartsWith(LoggingScopeNamespacePrefix))
                     .ToDictionary(n => n, GlobalDiagnosticsContext.Get);
         }
     }

@@ -9,9 +9,9 @@ using NLog.LayoutRenderers;
 using NLog.Layouts;
 using NLog.Targets;
 
-namespace NLog.LoggingContext.Targets
+namespace NLog.LoggingScope.Targets
 {
-    public class LoggingContextDbTarget<TLogSchema> : DatabaseTarget where TLogSchema : class
+    public class LoggingScopeDbTarget<TLogSchema> : DatabaseTarget where TLogSchema : class
     {        
         public virtual string SchemaTableName { get; set; }
 
@@ -25,7 +25,7 @@ namespace NLog.LoggingContext.Targets
 
         private List<InsertParameterPair> InsertParameterPairs { get; } = new List<InsertParameterPair>();
 
-        public LoggingContextDbTarget()
+        public LoggingScopeDbTarget()
         {
             CommandType = System.Data.CommandType.Text;
             if(SharedConfigSource == "ConfigurationManager")
@@ -35,9 +35,9 @@ namespace NLog.LoggingContext.Targets
         public virtual void ConfigureSharedConfigurationUsingConfigurationManager()
         {
             var appSettings = new Internal.ConfigurationManager().AppSettings;
-            var connectionStringKey = "NLog.LoggingContext:ConnectionString";
-            var connectionStringNameKey = "NLog.LoggingContext:ConnectionStringName";
-            var dbProviderKey = "NLog.LoggingContext:DbProvider";
+            var connectionStringKey = "NLog.LoggingScope:ConnectionString";
+            var connectionStringNameKey = "NLog.LoggingScope:ConnectionStringName";
+            var dbProviderKey = "NLog.LoggingScope:DbProvider";
             if (appSettings.AllKeys.Contains(connectionStringKey))
                 ConnectionString = appSettings.Get(connectionStringKey);
             if (appSettings.AllKeys.Contains(connectionStringNameKey))
@@ -46,7 +46,7 @@ namespace NLog.LoggingContext.Targets
                 DBProvider = appSettings.Get(dbProviderKey);
         }
 
-        public LoggingContextDbTarget<TLogSchema> SetColumn(
+        public LoggingScopeDbTarget<TLogSchema> SetColumn(
             Layout sourceLayout, string targetTableColumnName) 
         {
             AddColumn(sourceLayout, targetTableColumnName);
@@ -54,7 +54,7 @@ namespace NLog.LoggingContext.Targets
             return this;
         }
 
-        public LoggingContextDbTarget<TLogSchema> SetColumn<TColumn>(
+        public LoggingScopeDbTarget<TLogSchema> SetColumn<TColumn>(
             Layout sourceLayout,
             Expression<Func<TLogSchema, TColumn>> targetTableColumnExpression)
         {
@@ -63,14 +63,14 @@ namespace NLog.LoggingContext.Targets
             return this;
         }
 
-        public LoggingContextDbTarget<TLogSchema> SetGdcColumn(string targetTableColumnName)
+        public LoggingScopeDbTarget<TLogSchema> SetGdcColumn(string targetTableColumnName)
         {
             AddGdcColumn(targetTableColumnName);
             RefreshInsertCommandText();
             return this;
         }
 
-        public LoggingContextDbTarget<TLogSchema> SetGdcColumn<TColumn>(
+        public LoggingScopeDbTarget<TLogSchema> SetGdcColumn<TColumn>(
             Expression<Func<TLogSchema, TColumn>> targetTableColumnExpression)
         {
             AddGdcColumn(targetTableColumnExpression);
@@ -80,7 +80,7 @@ namespace NLog.LoggingContext.Targets
 
         internal void AddColumn(Layout sourceLayout, string targetTableColumnName)
         {
-            var insertParameterName = "p_NLog_LoggingContext_" + targetTableColumnName;
+            var insertParameterName = "p_NLog_LoggingScope_" + targetTableColumnName;
             if (Parameters.Any(p => p.Name == insertParameterName))
                 Parameters.Remove(Parameters.Single(p => p.Name == insertParameterName));
             Parameters.Add(new DatabaseParameterInfo { Name = insertParameterName, Layout = sourceLayout });

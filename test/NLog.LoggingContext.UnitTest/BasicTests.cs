@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NLog.LoggingContext.TestUtils;
-using NLog.LoggingContext.UnitTest.MethodCallTargeting;
+using NLog.LoggingScope.TestUtils;
+using NLog.LoggingScope.UnitTest.MethodCallTargeting;
 
-namespace NLog.LoggingContext.UnitTest
+namespace NLog.LoggingScope.UnitTest
 {
     [TestClass]
     public class BasicTests : MockTargetSingletonTests
@@ -16,7 +16,7 @@ namespace NLog.LoggingContext.UnitTest
             var testMessage = "Hello World!";
 
             // Act
-            var contextName = ContextUtils.DoWithContext(logger => logger.Info(testMessage));
+            var contextName = ScopeUtils.DoWithContext(logger => logger.Info(testMessage));
 
             // Assert
             var row = MockTargetSingleton.GetLogRows().Single();
@@ -34,7 +34,7 @@ namespace NLog.LoggingContext.UnitTest
             var testMsg2 = "World!";
 
             // Act
-            var contextName = ContextUtils.DoWithContext(logger => 
+            var contextName = ScopeUtils.DoWithContext(logger => 
             {
                 logger.Info(testMsg1);
                 logger.Info(testMsg2);
@@ -84,19 +84,19 @@ namespace NLog.LoggingContext.UnitTest
         [TestMethod]
         public void TestSequentialLogRowEntryFirstOuterThenInnerContext() => TestSequentialLogRowEntry((outerMsg, innerMsg, outerCtxName, innerCtxName) =>
         {
-            ContextUtils.DoWithContext(outerCtxName, logger =>
+            ScopeUtils.DoWithContext(outerCtxName, logger =>
             {
                 logger.Info(outerMsg);
-                ContextUtils.DoWithContext(innerCtxName, () => logger.Info(innerMsg));
+                ScopeUtils.DoWithContext(innerCtxName, () => logger.Info(innerMsg));
             });
         });
 
         [TestMethod]
         public void TestSequentialLogRowEntryFirstInnerThenOuterContext() => TestSequentialLogRowEntry((outerMsg, innerMsg, outerCtxName, innerCtxName) =>
         {
-            ContextUtils.DoWithContext(outerCtxName, logger =>
+            ScopeUtils.DoWithContext(outerCtxName, logger =>
             {
-                ContextUtils.DoWithContext(innerCtxName, () => logger.Info(innerMsg));
+                ScopeUtils.DoWithContext(innerCtxName, () => logger.Info(innerMsg));
                 logger.Info(outerMsg);
             });
         });
@@ -111,8 +111,8 @@ namespace NLog.LoggingContext.UnitTest
             var ctxName2 = "Context2";
 
             // Act
-            ContextUtils.DoWithContext(ctxName1, logger => logger.Info(testMsg1));
-            ContextUtils.DoWithContext(ctxName2, logger => logger.Info(testMsg2));
+            ScopeUtils.DoWithContext(ctxName1, logger => logger.Info(testMsg1));
+            ScopeUtils.DoWithContext(ctxName2, logger => logger.Info(testMsg2));
 
             // Assert
             var rows = MockTargetSingleton.GetLogRows().ToList();

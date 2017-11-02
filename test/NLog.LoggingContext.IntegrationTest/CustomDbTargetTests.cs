@@ -4,12 +4,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NLog.LoggingContext.IntegrationTest.SQLite;
-using NLog.LoggingContext.Targets;
-using NLog.LoggingContext.TestUtils;
+using NLog.LoggingScope.IntegrationTest.SQLite;
+using NLog.LoggingScope.Targets;
+using NLog.LoggingScope.TestUtils;
 using NLog.Targets;
 
-namespace NLog.LoggingContext.IntegrationTest
+namespace NLog.LoggingScope.IntegrationTest
 {
     [TestClass]
     public class CustomDbTargetTests
@@ -55,7 +55,7 @@ namespace NLog.LoggingContext.IntegrationTest
                 act: (testUsername, testMsg) =>
                 {
                     GlobalDiagnosticsContext.Set(UsernameIdentifier, testUsername);
-                    ContextUtils.DoWithContext(logger => logger.Info(testMsg));
+                    ScopeUtils.DoWithContext(logger => logger.Info(testMsg));
                 },
                 getActualUsernameFunc: logRow => logRow.StringUsername);
         
@@ -72,7 +72,7 @@ namespace NLog.LoggingContext.IntegrationTest
                 act: (testUsername, testMsg) =>
                 {
                     GlobalDiagnosticsContext.Set(UsernameIdentifier, testUsername);
-                    ContextUtils.DoWithContext(logger => logger.Info(testMsg));
+                    ScopeUtils.DoWithContext(logger => logger.Info(testMsg));
                 },
                 getActualUsernameFunc: logRow => logRow.SchemaUsername);
 
@@ -86,8 +86,8 @@ namespace NLog.LoggingContext.IntegrationTest
                     target.SetGdcColumn(schemaExpression);
                     return ReflectionUtils.GetPropertyInfo(schemaExpression).Name;
                 },
-                act: (testUsername, testMsg) => ContextUtils.DoWithContext(logger => logger.Info(testMsg), 
-                    getNewContext: cn => new LoggingContext(cn).WithSchema<DefaultLogSchemaWithUsername>(s => s.Set(f => f.SchemaUsername, testUsername))),
+                act: (testUsername, testMsg) => ScopeUtils.DoWithContext(logger => logger.Info(testMsg), 
+                    getNewContext: cn => new LoggingScope(cn).WithSchema<DefaultLogSchemaWithUsername>(s => s.Set(f => f.SchemaUsername, testUsername))),
                 getActualUsernameFunc: logRow => logRow.SchemaUsername);
 
 
@@ -100,13 +100,13 @@ namespace NLog.LoggingContext.IntegrationTest
                     target.SetGdcColumn(schemaExpression);
                     return ReflectionUtils.GetPropertyInfo(schemaExpression).Name;
                 },
-                act: (testUsername, testMsg) => ContextUtils.DoWithContext(logger => logger.Info(testMsg),
-                    getNewContext: cn => new LoggingContext(cn).Set<DefaultLogSchemaWithUsername, string>(s => s.SchemaUsername, testUsername)),
+                act: (testUsername, testMsg) => ScopeUtils.DoWithContext(logger => logger.Info(testMsg),
+                    getNewContext: cn => new LoggingScope(cn).Set<DefaultLogSchemaWithUsername, string>(s => s.SchemaUsername, testUsername)),
                 getActualUsernameFunc: logRow => logRow.SchemaUsername);
 
 
         public void TestCustomUsernameColumnExtension(
-            Func<LoggingContextDbTarget<DefaultLogSchemaWithUsername>, string> withColumnNameFunc,
+            Func<LoggingScopeDbTarget<DefaultLogSchemaWithUsername>, string> withColumnNameFunc,
             Action<string, string> act,
             Func<LogRow, string> getActualUsernameFunc)
         {
@@ -116,14 +116,14 @@ namespace NLog.LoggingContext.IntegrationTest
             var testMsg = "Hallo world!";
 
             // Create custom target with an extra StringUsername column
-            var target = new LoggingContextDbTarget<DefaultLogSchemaWithUsername>
+            var target = new LoggingScopeDbTarget<DefaultLogSchemaWithUsername>
             {
                 Name = targetName,
                 SchemaTableName = _schemaTableName
             };
 
             // Initialize DefaultSchema fields
-            DefaultLoggingContextDbTarget.DoDefaultInitialization(target, _schemaTableName);
+            DefaultLoggingScopeDbTarget.DoDefaultInitialization(target, _schemaTableName);
 
             // Tell the custom target to get the Username-value from a gdc-entry for each log row
             var columnName = withColumnNameFunc(target);
@@ -136,7 +136,7 @@ namespace NLog.LoggingContext.IntegrationTest
                 IgnoreFailures = false
             });
 
-            LoggingContextDbTargetSetter.SetTarget<DefaultLogSchemaWithUsername>(target, _connectionString);
+            LoggingScopeDbTargetSetter.SetTarget<DefaultLogSchemaWithUsername>(target, _connectionString);
 
             // Act
             act(testUsername, testMsg);

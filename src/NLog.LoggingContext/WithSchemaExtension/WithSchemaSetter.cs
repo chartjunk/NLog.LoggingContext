@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace NLog.LoggingContext.WithSchemaExtension
+namespace NLog.LoggingScope.WithSchemaExtension
 {
     public class WithSchemaSetter<TSchema> where TSchema : class
     {
-        private readonly LoggingContext _loggingContext;
+        private readonly LoggingScope _LoggingScope;
 
-        public WithSchemaSetter(LoggingContext loggingContext)
+        public WithSchemaSetter(LoggingScope LoggingScope)
         {
-            _loggingContext = loggingContext;
+            _LoggingScope = LoggingScope;
         }
 
         public WithSchemaSetter<TSchema> Set<TValue>(Expression<Func<TSchema, TValue>> propertyExpression, TValue value)
         {
             var property = ReflectionUtils.GetPropertyInfo(propertyExpression);
-            DiagnosticContextUtils.Gdc.SetGdcByShortKey(property.Name, _loggingContext.ContextId, Convert.ToString(value));
+            DiagnosticContextUtils.Gdc.SetGdcByShortKey(property.Name, _LoggingScope.ContextId, Convert.ToString(value));
             return this;
         }
     }

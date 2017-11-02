@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using Dapper;
-using NLog.LoggingContext.TestUtils;
+using NLog.LoggingScope.TestUtils;
 
-namespace NLog.LoggingContext.IntegrationTest.SQLite
+namespace NLog.LoggingScope.IntegrationTest.SQLite
 {
     class Access : IDisposable
     {

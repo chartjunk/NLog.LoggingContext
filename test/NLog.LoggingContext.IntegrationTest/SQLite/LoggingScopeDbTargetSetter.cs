@@ -1,14 +1,14 @@
 ﻿using System.Linq;
 using NLog.Config;
-using NLog.LoggingContext.Targets;
+using NLog.LoggingScope.Targets;
 using NLog.Targets;
 
-namespace NLog.LoggingContext.IntegrationTest.SQLite
+namespace NLog.LoggingScope.IntegrationTest.SQLite
 {
-    internal static class LoggingContextDbTargetSetter
+    internal static class LoggingScopeDbTargetSetter
     {
         public static void SetTarget<TLogSchema>(
-            LoggingContextDbTarget<TLogSchema> target, string connectionString) where TLogSchema : class
+            LoggingScopeDbTarget<TLogSchema> target, string connectionString) where TLogSchema : class
         {
             target.CommandType = System.Data.CommandType.Text;
             target.ConnectionString = connectionString;
@@ -33,7 +33,7 @@ namespace NLog.LoggingContext.IntegrationTest.SQLite
 
         public static void SetTarget(string targetName, string connectionString, string schemaTableName)
         {
-            var target = new DefaultLoggingContextDbTarget
+            var target = new DefaultLoggingScopeDbTarget
             {
                 Name = targetName,
                 SchemaTableName = schemaTableName
@@ -41,7 +41,7 @@ namespace NLog.LoggingContext.IntegrationTest.SQLite
             SetTarget(target, connectionString);
         }
 
-        public static void InstallTarget<TLogSchema>(LoggingContextDbTarget<TLogSchema> target) where TLogSchema : class
+        public static void InstallTarget<TLogSchema>(LoggingScopeDbTarget<TLogSchema> target) where TLogSchema : class
         {
             // HACK: SQLite crashes if type is *CHAR(MAX) instead of *CHAR(123)
             var command = Enumerable.First<DatabaseCommandInfo>(target.InstallDdlCommands).Text.ToString().Replace("CHAR(MAX)", "CHAR(123)").Replace("'", "");

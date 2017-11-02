@@ -3,10 +3,10 @@ using NLog.Config;
 using NLog.LayoutRenderers;
 using NLog.Layouts;
 
-namespace NLog.LoggingContext
+namespace NLog.LoggingScope
 {
     [LayoutRenderer("logging-context-gdc")]
-    public class LoggingContextGdcLayoutRenderer : LayoutRenderers.GdcLayoutRenderer
+    public class LoggingScopeGdcLayoutRenderer : LayoutRenderers.GdcLayoutRenderer
     {
         protected override void Append(StringBuilder builder, LogEventInfo logEvent)
         {

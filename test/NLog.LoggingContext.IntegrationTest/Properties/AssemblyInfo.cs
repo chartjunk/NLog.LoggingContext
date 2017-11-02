@@ -2,11 +2,11 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("NLog.LoggingContext.IntegrationTest")]
+[assembly: AssemblyTitle("NLog.LoggingScope.IntegrationTest")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NLog.LoggingContext.IntegrationTest")]
+[assembly: AssemblyProduct("NLog.LoggingScope.IntegrationTest")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

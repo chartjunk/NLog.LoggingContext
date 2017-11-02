@@ -7,8 +7,8 @@
     <ProjectGuid>{6ADE7D41-FD04-4C22-B500-B6CE13B791D7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NLog.LoggingContext.IntegrationTest</RootNamespace>
-    <AssemblyName>NLog.LoggingContext.IntegrationTest</AssemblyName>
+    <RootNamespace>NLog.LoggingScope.IntegrationTest</RootNamespace>
+    <AssemblyName>NLog.LoggingScope.IntegrationTest</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -73,9 +73,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LoggingContextDbTargetTests.cs" />
+    <Compile Include="LoggingScopeDbTargetTests.cs" />
     <Compile Include="SQLite\Access.cs" />
-    <Compile Include="SQLite\LoggingContextDbTargetSetter.cs" />
+    <Compile Include="SQLite\LoggingScopeDbTargetSetter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CustomDbTargetTests.cs" />
     <Compile Include="AssemblyExtensionTests.cs" />
@@ -94,13 +94,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\NLog.LoggingContext\NLog.LoggingContext.csproj">
+    <ProjectReference Include="..\..\src\NLog.LoggingContext\NLog.LoggingScope.csproj">
       <Project>{aace0af9-d2c6-4dee-9cd8-78c915ced96b}</Project>
-      <Name>NLog.LoggingContext</Name>
+      <Name>NLog.LoggingScope</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NLog.LoggingContext.TestUtils\NLog.LoggingContext.TestUtils.csproj">
+    <ProjectReference Include="..\NLog.LoggingContext.TestUtils\NLog.LoggingScope.TestUtils.csproj">
       <Project>{58e542fa-31f4-4e1f-a51d-5cc42b77c1de}</Project>
-      <Name>NLog.LoggingContext.TestUtils</Name>
+      <Name>NLog.LoggingScope.TestUtils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace NLog.LoggingContext
+namespace NLog.LoggingScope
 {
-    public class LoggingContext : IDisposable
+    public class LoggingScope : IDisposable
     {
         private string _parentContextId;
         private string _parentParentContextId;
         public string ContextId { get; }
 
-        public LoggingContext(string contextName)
+        public LoggingScope(string contextName)
         {
             ContextId = GenerateContextId();
             PushContext(contextName);
