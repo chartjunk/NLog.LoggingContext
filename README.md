@@ -5,7 +5,8 @@ Available via NPM
 install-package NLog.LoggingScope
 ```
 
-### ENRICH your log entries with an ID that is uniform within a block of code
+### ENRICH your log entries with IDs...
+...that are uniform within a block of code
 
 ```C#
 using(new LoggingScope("MyScope"))
@@ -53,3 +54,21 @@ Resulting log entries:
     <td>Buzz</td>
   </tr>
 </table>
+
+### IDs are unique per LoggingContext instance
+
+```C#
+public class MyApp
+{
+  private static Logger Logger = LogManager.GetCurrentClassLogger();
+  public void Execute()
+  {
+    using(new LoggingScope("Lorem"))
+      Logger.Trace("Ipsum");
+  }
+}
+
+var myApp = new MyApp();
+myApp.Execute()
+myApp.Execute()
+```
