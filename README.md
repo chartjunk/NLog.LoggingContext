@@ -2,10 +2,13 @@
 LoggingScope aims to make it less of a pain to explore and discover the full story behind each log entry. By attaching context specific IDs to entries, one can trivially filter through piles of trace and end up with only those entries that have a meaning in the current context.
 
 
-Available via NPM
+## Getting started
+NuGet package is available via NPM
 ```
 install-package NLog.LoggingScope
 ```
+
+## Main features
 ### Enrich your log entries with IDs...
 ...that are uniform within a block of code:
 
