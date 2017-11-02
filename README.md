@@ -3,7 +3,7 @@ LoggingScope aims to make it less of a pain to explore and discover the full sto
 
 
 ## Getting started
-NuGet package is available via NPM
+NuGet package (https://www.nuget.org/packages/NLog.LoggingScope/) is available via NPM
 ```
 install-package NLog.LoggingScope
 ```
