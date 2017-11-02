@@ -1,6 +1,16 @@
 # NLog.LoggingScope
 
+</br>
+
+Available via NPM
+```
+install-package NLog.LoggingScope
+```
+
 ### ENRICH your log entries with IDs...
+
+</br>
+
 ...that are uniform within a block of code:
 
 ```C#
