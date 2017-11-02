@@ -29,8 +29,8 @@ using(new LoggingScope("AnotherScope"))
 ScopeId                               ScopeName     Severity  Message
 4e4e92ee-6c6c-48b0-8dc3-04d2cc4d1f31  MyScope       Debug     Hello
 4e4e92ee-6c6c-48b0-8dc3-04d2cc4d1f31  MyScope       Debug     World!
-f162e96b-9e64-4cc9-9e1d-f1105b32d204  AnotherScope  Debug     Fizz
-f162e96b-9e64-4cc9-9e1d-f1105b32d204  AnotherScope  Debug     Buzz
+f162e96b-9e64-4cc9-9e1d-f1105b32d204  AnotherScope  Info      Fizz
+f162e96b-9e64-4cc9-9e1d-f1105b32d204  AnotherScope  Info      Buzz
 ```
 Being unique for each scope, one is able to find out what happened in each block *during a single execution* by searching log entries by a `ScopeId`. A new `ScopeId` is generated for each instance of `LoggingScope`:
 ```C#
