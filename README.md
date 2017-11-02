@@ -1,5 +1,5 @@
 # NLog.LoggingScope
-LoggingScope aims to make it less of a pain to explore and discover the full story behind each log entry. By attaching context specific IDs to entries, one can trivially filter through piles of trace and end up with only those entries that have a meaning in the current context.
+`LoggingScope` aims to make it less of a pain to explore and discover the full story behind each log entry. By attaching context specific `ScopeIds` to entries, one can trivially filter through piles of trace and end up with only those entries that have a meaning in the current context.
 
 
 ## Getting started
@@ -9,8 +9,8 @@ install-package NLog.LoggingScope
 ```
 
 ## Main features
-### Enrich your log entries with IDs...
-...that are uniform within a block of code:
+### Enrich your log entries with `ScopeIds`...
+...that are uniform within blocks of code:
 
 ```C#
 using(new LoggingScope("MyScope"))
@@ -58,6 +58,9 @@ using(new LoggingScope("AnotherScope"))
     <td>Buzz</td>
   </tr>
 </table>
+</br>
+
+Being unique, one is able to find out what happened in each block *during a single execution* by searching log entries by `ScopeId`.
 
 ### For each scope instance, IDs are unique:
 
@@ -76,6 +79,8 @@ var myApp = new MyApp();
 myApp.Execute();
 myApp.Execute();
 ```
+
+
 
 ##### Result:
 <table>
@@ -98,6 +103,7 @@ myApp.Execute();
     <td>Ipsum</td>
   </tr>
 </table>
+</br>
 
 ### Nested scopes are attached to each other with a parent-child relationship:
 ```C#
