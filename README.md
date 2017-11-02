@@ -59,7 +59,7 @@ using(new LoggingScope("AnotherScope"))
   </tr>
 </table>
 
-Being unique for each scope, one is able to find out what happened in each block *during a single execution* by searching log entries by `ScopeId`. A new `ScopeId` is generated for each instance of `LoggingScope`:
+Being unique for each scope, one is able to find out what happened in each block *during a single execution* by searching log entries by a `ScopeId`. A new `ScopeId` is generated for each instance of `LoggingScope`:
 ```C#
 public class MyApp
 {
