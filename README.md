@@ -61,7 +61,7 @@ Resulting log entries:
 <hr/>
 </br>
 
-#### For each LoggingScope instance, IDs are unique:
+### For each scope instance, IDs are unique:
 
 ```C#
 public class MyApp
@@ -103,7 +103,7 @@ myApp.Execute();
 <hr/>
 </br>
 
-#### Nested scopes are attached to each other with a parent-child relationship:
+### Nested scopes are attached to each other with a parent-child relationship:
 ```C#
 using(new LoggingScope("TheParent"))
 {
