@@ -15,7 +15,7 @@ namespace NLog.LoggingScope.WithSchemaExtension
         public WithSchemaSetter<TSchema> Set<TValue>(Expression<Func<TSchema, TValue>> propertyExpression, TValue value)
         {
             var property = ReflectionUtils.GetPropertyInfo(propertyExpression);
-            DiagnosticContextUtils.Gdc.SetGdcByShortKey(property.Name, _LoggingScope.ContextId, Convert.ToString(value));
+            DiagnosticContextUtils.Gdc.SetGdcByShortKey(property.Name, _LoggingScope.ScopeId, Convert.ToString(value));
             return this;
         }
     }

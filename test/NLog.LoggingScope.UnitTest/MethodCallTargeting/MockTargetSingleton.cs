@@ -14,20 +14,20 @@ namespace NLog.LoggingScope.UnitTest.MethodCallTargeting
         public static void Log(
             string level,
             string message,
-            string contextName,
-            string contextId,
-            string topmostParentContextId,
+            string scopeName,
+            string scopeId,
+            string topmostParentScopeId,
             string dateTime,
-            string parentContextId,
+            string parentScopeId,
             string exception)
             => Instance.Log(
                 level,
                 message,
-                contextName,
-                contextId,
-                topmostParentContextId,
+                scopeName,
+                scopeId,
+                topmostParentScopeId,
                 dateTime,
-                parentContextId,
+                parentScopeId,
                 exception);
     }
 }

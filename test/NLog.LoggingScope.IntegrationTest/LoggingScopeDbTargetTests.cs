@@ -67,8 +67,8 @@ namespace NLog.LoggingScope.IntegrationTest
             var logRows = _access.GetLogRows();
             Assert.AreEqual(2, logRows.Count);
              CollectionAssert.AreEquivalent(new[] { testMessage1, testMessage2 }, logRows.Select(r => r.Message).ToArray());
-            Assert.AreEqual(1, logRows.Select(r => r.ContextId).Distinct().Count());
-            Assert.IsTrue(logRows.All(r => r.ContextId == r.TopmostParentContextId));
+            Assert.AreEqual(1, logRows.Select(r => r.ScopeId).Distinct().Count());
+            Assert.IsTrue(logRows.All(r => r.ScopeId == r.TopmostParentScopeId));
         }
 
         [TestMethod]
@@ -86,8 +86,8 @@ namespace NLog.LoggingScope.IntegrationTest
             var logRows = _access.GetLogRows();
             Assert.AreEqual(2, logRows.Count);
             CollectionAssert.AreEquivalent(new[] { testMessage1, testMessage2 }, logRows.Select(r => r.Message).ToArray());
-            Assert.AreEqual(2, logRows.Select(r => r.ContextId).Distinct().Count());
-            Assert.IsTrue(logRows.All(r => r.ContextId == r.TopmostParentContextId));
+            Assert.AreEqual(2, logRows.Select(r => r.ScopeId).Distinct().Count());
+            Assert.IsTrue(logRows.All(r => r.ScopeId == r.TopmostParentScopeId));
         }
 
         [TestMethod]
@@ -113,14 +113,14 @@ namespace NLog.LoggingScope.IntegrationTest
 
             // Assert
             var logRows = _access.GetLogRows();
-            Assert.AreEqual(1, logRows.Select(r => r.TopmostParentContextId).Distinct().Count());
-            var context1Rows = logRows.Where(r => r.ContextName == context1Name).ToList();
-            var context2Rows = logRows.Where(r => r.ContextName == context2Name).ToList();
+            Assert.AreEqual(1, logRows.Select(r => r.TopmostParentScopeId).Distinct().Count());
+            var context1Rows = logRows.Where(r => r.ScopeName == context1Name).ToList();
+            var context2Rows = logRows.Where(r => r.ScopeName == context2Name).ToList();
             Assert.AreEqual(1, context1Rows.Count);
             Assert.AreEqual(2, context2Rows.Count);
-            Assert.AreEqual(1, context1Rows.Where(r => r.ContextId == r.TopmostParentContextId).Count());
-            Assert.AreEqual(1, context2Rows.Select(r => r.ContextId).Distinct().Count());
-            Assert.AreEqual(context1Rows.Single().ContextId, context2Rows.Select(r => r.ParentContextId).Distinct().Single());
+            Assert.AreEqual(1, context1Rows.Where(r => r.ScopeId == r.TopmostParentScopeId).Count());
+            Assert.AreEqual(1, context2Rows.Select(r => r.ScopeId).Distinct().Count());
+            Assert.AreEqual(context1Rows.Single().ScopeId, context2Rows.Select(r => r.ParentScopeId).Distinct().Single());
         }
     }
 }

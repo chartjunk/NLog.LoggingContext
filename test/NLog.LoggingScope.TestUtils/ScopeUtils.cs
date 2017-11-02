@@ -4,16 +4,16 @@ namespace NLog.LoggingScope.TestUtils
 {
     public static class ScopeUtils
     {
-        public static string DoWithContext(string contextName, Action<Logger> action) => DoWithContext(action, contextName);
-        public static string DoWithContext(string contextName, Action action) => DoWithContext(logger => action(), contextName);
-        public static string DoWithContext(Action<Logger> action, string contextName = "MyContext", Func<string, LoggingScope> getNewContext = null)
+        public static string DoWithContext(string scopeName, Action<Logger> action) => DoWithContext(action, scopeName);
+        public static string DoWithContext(string scopeName, Action action) => DoWithContext(logger => action(), scopeName);
+        public static string DoWithContext(Action<Logger> action, string scopeName = "MyContext", Func<string, LoggingScope> getNewContext = null)
         {
             getNewContext = getNewContext ?? (n => new LoggingScope(n));
             var logger = LogManager.GetCurrentClassLogger();
-            using (getNewContext(contextName))
+            using (getNewContext(scopeName))
                 action(logger);
 
-            return contextName;
+            return scopeName;
         }
     }
 }

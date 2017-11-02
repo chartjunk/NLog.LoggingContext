@@ -56,13 +56,13 @@ namespace NLog.LoggingScope.UnitTest
             var rows = MockTargetSingleton.GetLogRows().ToList();
             var row1 = rows.Single(r => r.Message == testMsg1);
             var row2 = rows.Single(r => r.Message == testMsg2);
-            var ctxId1 = row1.ContextId;
-            var ctxId2 = row2.ContextId;
-            Assert.AreNotEqual(row1.ContextId, row2.ContextId);
+            var ctxId1 = row1.ScopeId;
+            var ctxId2 = row2.ScopeId;
+            Assert.AreNotEqual(row1.ScopeId, row2.ScopeId);
             new[] { row1, row2 }.ToList().ForEach(row =>
             {
-                Assert.AreEqual(row.ContextId, row.TopmostParentContextId);
-                Assert.AreEqual("", row.ParentContextId);
+                Assert.AreEqual(row.ScopeId, row.TopmostParentScopeId);
+                Assert.AreEqual("", row.ParentScopeId);
             });
         }
     }

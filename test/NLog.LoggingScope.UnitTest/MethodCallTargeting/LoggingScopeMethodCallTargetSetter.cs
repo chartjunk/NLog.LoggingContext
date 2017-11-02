@@ -23,13 +23,13 @@ namespace NLog.LoggingScope.UnitTest.MethodCallTargeting
             var methodCallParameters =
                 new MethodCallParameter[]
                 {
-                    new MethodCallParameter("contextId", Layouts.ContextIdLayout),
-                    new MethodCallParameter("contextName", Layouts.GetGdcLayout("ContextName")),
+                    new MethodCallParameter("scopeId", Layouts.ScopeIdLayout),
+                    new MethodCallParameter("scopeName", Layouts.GetGdcLayout("ScopeName")),
                     new MethodCallParameter("level", Layouts.LevelLayout),
-                    new MethodCallParameter("parentContextId", Layouts.GetGdcLayout("ParentContextId")),
+                    new MethodCallParameter("parentScopeId", Layouts.GetGdcLayout("ParentScopeId")),
                     new MethodCallParameter("dateTime", Layouts.DateTimeLayout),
                     new MethodCallParameter("exception", Layouts.ExceptionLayout),
-                    new MethodCallParameter("topmostParentContextId", Layouts.GetGdcLayout("TopmostParentContextId")),
+                    new MethodCallParameter("topmostParentScopeId", Layouts.GetGdcLayout("TopmostParentScopeId")),
                     new MethodCallParameter("message", Layouts.MessageLayout),
                 }
                 .Join(methodParameters.Select((pName, ix) => new { pName, ix }), a => a.Name, b => b.pName, (a, b) => new

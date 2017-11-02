@@ -16,14 +16,14 @@ namespace NLog.LoggingScope.UnitTest
             var testMessage = "Hello World!";
 
             // Act
-            var contextName = ScopeUtils.DoWithContext(logger => logger.Info(testMessage));
+            var scopeName = ScopeUtils.DoWithContext(logger => logger.Info(testMessage));
 
             // Assert
             var row = MockTargetSingleton.GetLogRows().Single();
-            Assert.AreEqual(contextName, row.ContextName);
+            Assert.AreEqual(scopeName, row.ScopeName);
             Assert.AreEqual(testMessage, row.Message);
-            Assert.AreEqual(row.ContextId, row.TopmostParentContextId);
-            Assert.AreEqual("", row.ParentContextId);
+            Assert.AreEqual(row.ScopeId, row.TopmostParentScopeId);
+            Assert.AreEqual("", row.ParentScopeId);
         }
 
         [TestMethod]
@@ -34,7 +34,7 @@ namespace NLog.LoggingScope.UnitTest
             var testMsg2 = "World!";
 
             // Act
-            var contextName = ScopeUtils.DoWithContext(logger => 
+            var scopeName = ScopeUtils.DoWithContext(logger => 
             {
                 logger.Info(testMsg1);
                 logger.Info(testMsg2);
@@ -44,13 +44,13 @@ namespace NLog.LoggingScope.UnitTest
             var rows = MockTargetSingleton.GetLogRows().ToList();
             var row1 = rows.Single(r => r.Message == testMsg1);
             var row2 = rows.Single(r => r.Message != testMsg2);
-            var contextId = row1.ContextId;
+            var scopeId = row1.ScopeId;
             new[] { row1, row2 }.ToList().ForEach(row =>
             {
-                Assert.AreEqual(contextName, row.ContextName);
-                Assert.AreEqual(contextId, row.ContextId);
-                Assert.AreEqual(contextId, row.TopmostParentContextId);
-                Assert.AreEqual("", row.ParentContextId);
+                Assert.AreEqual(scopeName, row.ScopeName);
+                Assert.AreEqual(scopeId, row.ScopeId);
+                Assert.AreEqual(scopeId, row.TopmostParentScopeId);
+                Assert.AreEqual("", row.ParentScopeId);
             });
         }
 
@@ -69,16 +69,16 @@ namespace NLog.LoggingScope.UnitTest
             var rows = MockTargetSingleton.GetLogRows().ToList();
             var innerRow = rows.Single(r => r.Message == innerMsg);
             var outerRow = rows.Single(r => r.Message == outerMsg);
-            var innerCtxId = innerRow.ContextId;
-            var outerCtxId = outerRow.ContextId;
+            var innerCtxId = innerRow.ScopeId;
+            var outerCtxId = outerRow.ScopeId;
             Assert.AreEqual(innerMsg, innerRow.Message);
             Assert.AreEqual(outerMsg, outerRow.Message);
-            Assert.AreEqual(innerCtxName, innerRow.ContextName);
-            Assert.AreEqual(outerCtxName, outerRow.ContextName);
-            Assert.AreEqual("", outerRow.ParentContextId);
-            Assert.AreEqual(outerCtxId, innerRow.ParentContextId);
-            Assert.AreEqual(outerCtxId, outerRow.TopmostParentContextId);
-            Assert.AreEqual(outerCtxId, innerRow.TopmostParentContextId);
+            Assert.AreEqual(innerCtxName, innerRow.ScopeName);
+            Assert.AreEqual(outerCtxName, outerRow.ScopeName);
+            Assert.AreEqual("", outerRow.ParentScopeId);
+            Assert.AreEqual(outerCtxId, innerRow.ParentScopeId);
+            Assert.AreEqual(outerCtxId, outerRow.TopmostParentScopeId);
+            Assert.AreEqual(outerCtxId, innerRow.TopmostParentScopeId);
         }
 
         [TestMethod]
@@ -118,11 +118,11 @@ namespace NLog.LoggingScope.UnitTest
             var rows = MockTargetSingleton.GetLogRows().ToList();
             var row1 = rows.Single(r => r.Message == testMsg1);
             var row2 = rows.Single(r => r.Message == testMsg2);
-            Assert.IsTrue(row1.ContextId != row2.ContextId);
+            Assert.IsTrue(row1.ScopeId != row2.ScopeId);
             new[] { row1, row2 }.ToList().ForEach(row =>
             {
-                Assert.IsTrue(row.ContextId == row.TopmostParentContextId);
-                Assert.AreEqual("", row.ParentContextId);
+                Assert.IsTrue(row.ScopeId == row.TopmostParentScopeId);
+                Assert.AreEqual("", row.ParentScopeId);
             });
         }
     }

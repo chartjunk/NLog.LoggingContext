@@ -45,11 +45,11 @@ namespace NLog.LoggingScope
 
         public static class Gdc
         {
-            public static string GetGdcLongKey(string shortKey, string contextId = "")
-                => Mdlc.GetMdlcLongKey(shortKey) + ":" + contextId;
+            public static string GetGdcLongKey(string shortKey, string scopeId = "")
+                => Mdlc.GetMdlcLongKey(shortKey) + ":" + scopeId;
 
-            public static string GetGdcByShortKey(string shortKey, string contextId) => GetGdcByLongKey(
-                GetGdcLongKey(shortKey, contextId));
+            public static string GetGdcByShortKey(string shortKey, string scopeId) => GetGdcByLongKey(
+                GetGdcLongKey(shortKey, scopeId));
 
             public static string GetGdcByLongKey(string longKey)
             {
@@ -58,13 +58,13 @@ namespace NLog.LoggingScope
                 return null;
             }
 
-            public static void SetGdcByShortKey(string shortKey, string contextId, string value) =>
-                SetGdcByLongKey(GetGdcLongKey(shortKey, contextId), value);
+            public static void SetGdcByShortKey(string shortKey, string scopeId, string value) =>
+                SetGdcByLongKey(GetGdcLongKey(shortKey, scopeId), value);
 
             public static void SetGdcByLongKey(string longKey, string value) =>
                 GlobalDiagnosticsContext.Set(longKey, value);
 
-            public static void RemoveGdcByShortKey(string shortKey, string contextId) => RemoveGdcByLongKey(GetGdcLongKey(shortKey, contextId));
+            public static void RemoveGdcByShortKey(string shortKey, string scopeId) => RemoveGdcByLongKey(GetGdcLongKey(shortKey, scopeId));
 
             public static void RemoveGdcByLongKey(string longKey)
             {
@@ -72,28 +72,28 @@ namespace NLog.LoggingScope
                     GlobalDiagnosticsContext.Remove(longKey);
             }
 
-            public static void RemoveGdcByContextId(string contextId)
+            public static void RemoveGdcByScopeId(string scopeId)
             {
                 // TODO: Track context names within the context object and remove them straight by their names on disposal
                 GlobalDiagnosticsContext.GetNames().Where(n =>
                 
                     n.StartsWith(LoggingScopeNamespacePrefix)
-                    && n.EndsWith(":" + contextId)
+                    && n.EndsWith(":" + scopeId)
 
                 ).ToList().ForEach(GlobalDiagnosticsContext.Remove);
             }
 
-            public static void CopyGdcValues(string fromContextId, string toContextId)
+            public static void CopyGdcValues(string fromScopeId, string toScopeId)
             {
-                var fromContextIdLength = fromContextId.Length;
+                var fromScopeIdLength = fromScopeId.Length;
                 GlobalDiagnosticsContext.GetNames().Where(n =>
                 
                     n.StartsWith(LoggingScopeNamespacePrefix)
-                    && n.EndsWith(":" + fromContextId)
+                    && n.EndsWith(":" + fromScopeId)
 
                 ).ToList().ForEach(n =>
                 {
-                    var gdcLongKey = string.Join("", n.Take(n.Length - fromContextIdLength)) + toContextId;
+                    var gdcLongKey = string.Join("", n.Take(n.Length - fromScopeIdLength)) + toScopeId;
                     SetGdcByLongKey(gdcLongKey, GetGdcByLongKey(n));
                 });
             }

@@ -10,21 +10,21 @@ namespace NLog.LoggingScope.UnitTest.MethodCallTargeting
         public void Log(
             string level,
             string message,
-            string contextName,
-            string contextId,
-            string topmostParentContextId,
+            string scopeName,
+            string scopeId,
+            string topmostParentScopeId,
             string dateTime,
-            string parentContextId = null,
+            string parentScopeId = null,
             string exception = null)
             => _logRows.Add(new LogRow
             {
-                ContextId = contextId,
-                ContextName = contextName,
+                ScopeId = scopeId,
+                ScopeName = scopeName,
                 Exception = exception,
                 Level = level,
                 Message = message,
-                ParentContextId = parentContextId,
-                TopmostParentContextId = topmostParentContextId
+                ParentScopeId = parentScopeId,
+                TopmostParentScopeId = topmostParentScopeId
             });
 
         public IEnumerable<LogRow> GetLogRows() => _logRows;

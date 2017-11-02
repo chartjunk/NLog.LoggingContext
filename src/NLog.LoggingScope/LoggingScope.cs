@@ -5,56 +5,56 @@ namespace NLog.LoggingScope
 {
     public class LoggingScope : IDisposable
     {
-        private string _parentContextId;
-        private string _parentParentContextId;
-        public string ContextId { get; }
+        private string _parentScopeId;
+        private string _parentParentScopeId;
+        public string ScopeId { get; }
 
-        public LoggingScope(string contextName)
+        public LoggingScope(string scopeName)
         {
-            ContextId = GenerateContextId();
-            PushContext(contextName);
+            ScopeId = GenerateScopeId();
+            PushContext(scopeName);
         }        
 
         public void Dispose() => PopContext();
     
-        internal void PushContext(string contextName)
+        internal void PushContext(string scopeName)
         {
-            // Get parentContextId from parent context if one exists
-            _parentContextId = DiagnosticContextUtils.Mdlc.GetMdlcByShortKey("ContextId");
-            _parentParentContextId = DiagnosticContextUtils.Gdc.GetGdcByShortKey("ParentContextId", _parentContextId);
+            // Get parentScopeId from parent context if one exists
+            _parentScopeId = DiagnosticContextUtils.Mdlc.GetMdlcByShortKey("ScopeId");
+            _parentParentScopeId = DiagnosticContextUtils.Gdc.GetGdcByShortKey("ParentScopeId", _parentScopeId);
 
-            DiagnosticContextUtils.Mdlc.SetMdlcByShortKey("ContextId", ContextId);
+            DiagnosticContextUtils.Mdlc.SetMdlcByShortKey("ScopeId", ScopeId);
 
             // Roll parent context values to the current context as needed
-            if (_parentContextId != null)
+            if (_parentScopeId != null)
             {
                 // Copy parent context values to the current context. This has to be done before setting the overriding values of the current context.
-                DiagnosticContextUtils.Gdc.CopyGdcValues(_parentContextId, ContextId);
-                DiagnosticContextUtils.Gdc.SetGdcByShortKey("ParentContextId", ContextId, _parentContextId);
+                DiagnosticContextUtils.Gdc.CopyGdcValues(_parentScopeId, ScopeId);
+                DiagnosticContextUtils.Gdc.SetGdcByShortKey("ParentScopeId", ScopeId, _parentScopeId);
             }
             else
-                DiagnosticContextUtils.Gdc.SetGdcByShortKey("TopmostParentContextId", ContextId, ContextId);
+                DiagnosticContextUtils.Gdc.SetGdcByShortKey("TopmostParentScopeId", ScopeId, ScopeId);
 
-            if (_parentParentContextId != null)
-                DiagnosticContextUtils.Gdc.SetGdcByShortKey("ParentParentContextId", ContextId, _parentParentContextId);
+            if (_parentParentScopeId != null)
+                DiagnosticContextUtils.Gdc.SetGdcByShortKey("ParentParentScopeId", ScopeId, _parentParentScopeId);
             
             // Store the rest of the static context values
-            DiagnosticContextUtils.Gdc.SetGdcByShortKey("ContextName", ContextId, contextName);
+            DiagnosticContextUtils.Gdc.SetGdcByShortKey("ScopeName", ScopeId, scopeName);
         }
 
         internal void PopContext()
         {
-            DiagnosticContextUtils.Gdc.RemoveGdcByContextId(ContextId);
+            DiagnosticContextUtils.Gdc.RemoveGdcByScopeId(ScopeId);
 
             // Restore context ids
-            if (_parentContextId != null)
-                DiagnosticContextUtils.Mdlc.SetMdlcByShortKey("ContextId", _parentContextId);
+            if (_parentScopeId != null)
+                DiagnosticContextUtils.Mdlc.SetMdlcByShortKey("ScopeId", _parentScopeId);
             else            
-                DiagnosticContextUtils.Mdlc.RemoveMdlcByShortKey("ContextId");
+                DiagnosticContextUtils.Mdlc.RemoveMdlcByShortKey("ScopeId");
 
             // All parent context values should still reside at Gdc
         }
         
-        internal static string GenerateContextId() => Guid.NewGuid().ToString();
+        internal static string GenerateScopeId() => Guid.NewGuid().ToString();
     }
 }
