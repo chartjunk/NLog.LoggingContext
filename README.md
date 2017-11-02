@@ -9,7 +9,7 @@ install-package NLog.LoggingScope
 ```
 
 # Main features
-## Enrich your log entries with `ScopeIds`
+## Your log entries get enriched with `ScopeIds`
 They are uniform within blocks of code:
 
 ```C#
@@ -75,10 +75,6 @@ var myApp = new MyApp();
 myApp.Execute();
 myApp.Execute();
 ```
-
-
-
-##### Result:
 <table>
   <tr>
     <th>ScopeId</th>
@@ -101,7 +97,7 @@ myApp.Execute();
 </table>
 </br>
 
-## Nested scopes are attached to each other with a parent-child relationship:
+## Nesting scopes make them bound together with `ScopeIds`
 ```C#
 using(new LoggingScope("TheParent"))
 {
@@ -113,7 +109,6 @@ using(new LoggingScope("TheParent"))
   Logger.Debug("Three");
 }
 ```
-##### Result:
 <table>
   <tr>
     <th>ScopeId</th>
@@ -140,6 +135,8 @@ using(new LoggingScope("TheParent"))
     <td>Three</td>
   </tr>
 </table>
+
+It is not difficult to notice that these parent-child-connections form essentially a linked tree structure; the highest parent is the root. This provides nice options for *adjusting the focusing* one's log searches, focusing on smaller or larger contextes, whichever provides more insight :).
 
 ## SQL-target
 TODO
