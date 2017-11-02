@@ -1,10 +1,10 @@
-# NLog.LoggingContext
-Library for grouping your NLog log entries by their respective contexts. Find all related log entries by their context ids - instead of timestamps.
+# NLog.LoggingScope
+Library for grouping your NLog log entries by their respective scopes. Find all related log entries by their scope ids - instead of timestamps.
 A custom NLog target for effortless SQL database logging included. 
 
 Available via NPM
 ```
-install-package NLog.LoggingContext
+install-package NLog.LoggingScope
 ```
 
 + TODO: General manual
