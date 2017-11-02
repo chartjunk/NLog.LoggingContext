@@ -26,11 +26,11 @@ using(new LoggingScope("AnotherScope"))
 ```
 ##### Result:
 ```
-ScopeId                              ScopeName    Severity Message
-4e4e92ee-6c6c-48b0-8dc3-04d2cc4d1f31 MyScope      Debug    Hello
-4e4e92ee-6c6c-48b0-8dc3-04d2cc4d1f31 MyScope      Debug    World!
-f162e96b-9e64-4cc9-9e1d-f1105b32d204 AnotherScope Debug    Fizz
-f162e96b-9e64-4cc9-9e1d-f1105b32d204 AnotherScope Debug    Buzz
+ScopeId                               ScopeName     Severity  Message
+4e4e92ee-6c6c-48b0-8dc3-04d2cc4d1f31  MyScope       Debug     Hello
+4e4e92ee-6c6c-48b0-8dc3-04d2cc4d1f31  MyScope       Debug     World!
+f162e96b-9e64-4cc9-9e1d-f1105b32d204  AnotherScope  Debug     Fizz
+f162e96b-9e64-4cc9-9e1d-f1105b32d204  AnotherScope  Debug     Buzz
 ```
 Being unique for each scope, one is able to find out what happened in each block *during a single execution* by searching log entries by a `ScopeId`. A new `ScopeId` is generated for each instance of `LoggingScope`:
 ```C#
@@ -49,9 +49,9 @@ myApp.Execute();
 myApp.Execute();
 ```
 ```
-ScopeId                              ScopeName    Severity Message
-3058f00b-7d09-4d70-9720-bbb7d5f6ac9a Lorem        Trace    Ipsum
-d98dc934-2675-4072-9b57-ced90a4071d6 Lorem        Trace    Ipsum
+ScopeId                               ScopeName  Severity  Message
+3058f00b-7d09-4d70-9720-bbb7d5f6ac9a  Lorem      Trace     Ipsum
+d98dc934-2675-4072-9b57-ced90a4071d6  Lorem      Trace     Ipsum
 ```
 
 ## Nesting scopes make them bound together with `ScopeIds`
@@ -67,10 +67,10 @@ using(new LoggingScope("TheParent"))
 }
 ```
 ```
-ScopeId                              ScopeName ParentScopeId                        Message
-94bb82a3-7b63-4bb6-aa66-807f2a2d863d TheParent                                      One
-75ccddf9-d596-4ceb-b2ae-fe63b02b8b1b TheChild  94bb82a3-7b63-4bb6-aa66-807f2a2d863d Two
-94bb82a3-7b63-4bb6-aa66-807f2a2d863d TheParent                                      Three
+ScopeId                               ScopeName  ParentScopeId                         Message
+94bb82a3-7b63-4bb6-aa66-807f2a2d863d  TheParent                                        One
+75ccddf9-d596-4ceb-b2ae-fe63b02b8b1b  TheChild   94bb82a3-7b63-4bb6-aa66-807f2a2d863d  Two
+94bb82a3-7b63-4bb6-aa66-807f2a2d863d  TheParent                                        Three
 ```
 
 These parent-child-connections form essentially a linked tree structure; the highest parent is the root. This provides nice options for *adjusting the focusing* one's log searches, focusing on smaller or larger contextes, whichever provides more insight.
