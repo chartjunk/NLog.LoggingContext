@@ -5,7 +5,7 @@ Available via NPM
 install-package NLog.LoggingScope
 ```
 
-#### Enrich your log entries with identifiers that match the scopes that the entries originate from
+### ENRICH your log entries with an ID that is uniform within a block of code
 
 ```C#
 using(new LoggingScope("MyScope"))
