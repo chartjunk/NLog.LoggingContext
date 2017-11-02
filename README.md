@@ -6,11 +6,12 @@ Available via NPM
 ```
 install-package NLog.LoggingScope
 ```
-
-### ENRICH your log entries with IDs...
-
+Available via NPM
+```
+install-package NLog.LoggingScope
+```
 </br>
-
+### ENRICH your log entries with IDs...
 ...that are uniform within a block of code:
 
 ```C#
