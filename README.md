@@ -92,7 +92,7 @@ Resulting log entries:
 </table>
 <hr/>
 
-Nested scopes are attached to each other a their child-parent relation:
+Nested scopes are attached to each other with a parent-child relationship:
 ```C#
 using(new LoggingScope("TheParent"))
 {
