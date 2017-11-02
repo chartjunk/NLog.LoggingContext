@@ -1,14 +1,11 @@
 # NLog.LoggingScope
+LoggingScope aims to make it less of a pain to explore and discover the full story behind each log entry. By attaching context specific IDs to entries, one can trivially filter through piles of trace and end up with only those entries that have a meaning in the current context.
 
-</br>
 
 Available via NPM
 ```
 install-package NLog.LoggingScope
 ```
-
-</br>
-
 ### Enrich your log entries with IDs...
 ...that are uniform within a block of code:
 
@@ -25,7 +22,7 @@ using(new LoggingScope("AnotherScope"))
   Logger.Info("Buzz");
 }
 ```
-Resulting log entries:
+##### Resulting log entries:
 <table>
   <tr>
     <th>ScopeId</th>
@@ -58,8 +55,6 @@ Resulting log entries:
     <td>Buzz</td>
   </tr>
 </table>
-<hr/>
-</br>
 
 ### For each scope instance, IDs are unique:
 
@@ -100,8 +95,6 @@ myApp.Execute();
     <td>Ipsum</td>
   </tr>
 </table>
-<hr/>
-</br>
 
 ### Nested scopes are attached to each other with a parent-child relationship:
 ```C#
@@ -142,4 +135,3 @@ using(new LoggingScope("TheParent"))
     <td>Three</td>
   </tr>
 </table>
-<hr/>
