@@ -6,12 +6,10 @@ Available via NPM
 ```
 install-package NLog.LoggingScope
 ```
-Available via NPM
-```
-install-package NLog.LoggingScope
-```
+
 </br>
-### ENRICH your log entries with IDs...
+
+### Enrich your log entries with IDs...
 ...that are uniform within a block of code:
 
 ```C#
@@ -61,8 +59,9 @@ Resulting log entries:
   </tr>
 </table>
 <hr/>
+</br>
 
-For each LoggingScope instance, IDs are unique:
+#### For each LoggingScope instance, IDs are unique:
 
 ```C#
 public class MyApp
@@ -80,7 +79,7 @@ myApp.Execute();
 myApp.Execute();
 ```
 
-Resulting log entries:
+##### Resulting log entries:
 <table>
   <tr>
     <th>ScopeId</th>
@@ -102,8 +101,9 @@ Resulting log entries:
   </tr>
 </table>
 <hr/>
+</br>
 
-Nested scopes are attached to each other with a parent-child relationship:
+#### Nested scopes are attached to each other with a parent-child relationship:
 ```C#
 using(new LoggingScope("TheParent"))
 {
@@ -115,7 +115,7 @@ using(new LoggingScope("TheParent"))
   Logger.Debug("Three");
 }
 ```
-Resulting log entries:
+##### Resulting log entries:
 <table>
   <tr>
     <th>ScopeId</th>
