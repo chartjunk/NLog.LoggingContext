@@ -1,10 +1,5 @@
 # NLog.LoggingScope
 
-Available via NPM
-```
-install-package NLog.LoggingScope
-```
-
 ### ENRICH your log entries with IDs...
 ...that are uniform within a block of code
 
@@ -54,8 +49,9 @@ Resulting log entries:
     <td>Buzz</td>
   </tr>
 </table>
+<hr/>
 
-### IDs are unique per LoggingContext instance
+### IDs are unique for each LoggingContext instance
 
 ```C#
 public class MyApp
@@ -72,3 +68,26 @@ var myApp = new MyApp();
 myApp.Execute()
 myApp.Execute()
 ```
+
+Resulting log entries:
+<table>
+  <tr>
+    <th>ScopeId</th>
+    <th>ScopeName</th>
+    <th>Severity</th>
+    <th>Message</th>
+  </tr>
+  <tr>
+    <td>3058f00b-7d09-4d70-9720-bbb7d5f6ac9a</td>
+    <td>Lorem</td>
+    <td>Trace</td>
+    <td>Ipsum</td>
+  </tr>
+  <tr>
+    <td>d98dc934-2675-4072-9b57-ced90a4071d6</td>
+    <td>Lorem</td>
+    <td>Trace</td>
+    <td>Ipsum</td>
+  </tr>
+</table>
+<hr/>
