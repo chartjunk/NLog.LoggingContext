@@ -25,7 +25,7 @@ using(new LoggingScope("AnotherScope"))
   Logger.Info("Buzz");
 }
 ```
-##### Resulting log entries:
+##### Result:
 <table>
   <tr>
     <th>ScopeId</th>
@@ -77,7 +77,7 @@ myApp.Execute();
 myApp.Execute();
 ```
 
-##### Resulting log entries:
+##### Result:
 <table>
   <tr>
     <th>ScopeId</th>
@@ -111,7 +111,7 @@ using(new LoggingScope("TheParent"))
   Logger.Debug("Three");
 }
 ```
-##### Resulting log entries:
+##### Result:
 <table>
   <tr>
     <th>ScopeId</th>
@@ -138,3 +138,12 @@ using(new LoggingScope("TheParent"))
     <td>Three</td>
   </tr>
 </table>
+
+## SQL-target
+TODO
+
+## NLog configuration
+TODO
+
+## Custom fields
+TODO
