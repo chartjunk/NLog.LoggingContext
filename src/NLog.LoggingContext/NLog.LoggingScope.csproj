@@ -12,17 +12,17 @@
     <Version>1.0</Version>
     <FileVersion>1.0</FileVersion>
     <Authors>Joona Luoma</Authors>
-    <Description>NLog logging context tool</Description>
+    <Description>NLog logging scope tool</Description>
     <Copyright>Copyright (c) 2017 Joona Luoma</Copyright>
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>NLog.LoggingContext</PackageId>
+    <PackageId>NLog.LoggingScope</PackageId>
     <PackageVersion>1.0</PackageVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageTags>NLog logging context scope scoping identifier id</PackageTags>
-    <PackageLicenseUrl>https://github.com/chartjunk/NLog.LoggingContext/blob/master/LICENSE.md</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/chartjunk/NLog.LoggingContext</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/chartjunk/NLog.LoggingScope/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/chartjunk/NLog.LoggingScope</PackageProjectUrl>
     <AssemblyName>NLog.LoggingScope</AssemblyName>
     <RootNamespace>NLog.LoggingScope</RootNamespace>
   </PropertyGroup>
