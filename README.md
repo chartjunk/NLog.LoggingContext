@@ -9,8 +9,8 @@ install-package NLog.LoggingScope
 ```
 
 # Main features
-## Enrich your log entries with `ScopeIds`...
-...that are uniform within blocks of code:
+## Enrich your log entries with `ScopeIds`
+They are uniform within blocks of code:
 
 ```C#
 using(new LoggingScope("MyScope"))
