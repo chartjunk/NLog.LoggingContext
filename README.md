@@ -2,14 +2,14 @@
 `LoggingScope` aims to make it less of a pain to explore and discover the full story behind each log entry. By attaching context specific `ScopeIds` to entries, one can trivially filter through piles of trace and end up with only those entries that have a meaning in the current context.
 
 
-## Getting started
+# Getting started
 NuGet package (https://www.nuget.org/packages/NLog.LoggingScope/) is available via NPM
 ```
 install-package NLog.LoggingScope
 ```
 
-## Main features
-### Enrich your log entries with `ScopeIds`...
+# Main features
+## Enrich your log entries with `ScopeIds`...
 ...that are uniform within blocks of code:
 
 ```C#
@@ -62,7 +62,7 @@ using(new LoggingScope("AnotherScope"))
 
 Being unique, one is able to find out what happened in each block *during a single execution* by searching log entries by `ScopeId`.
 
-### For each scope instance, IDs are unique:
+## For each scope instance, IDs are unique:
 
 ```C#
 public class MyApp
@@ -105,7 +105,7 @@ myApp.Execute();
 </table>
 </br>
 
-### Nested scopes are attached to each other with a parent-child relationship:
+## Nested scopes are attached to each other with a parent-child relationship:
 ```C#
 using(new LoggingScope("TheParent"))
 {
