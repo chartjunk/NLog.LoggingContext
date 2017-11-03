@@ -1,9 +1,9 @@
 # NLog.LoggingScope
-`LoggingScope` aims to make it less of a pain to explore and discover the full story behind each log entry. By attaching context specific `ScopeIds` to entries, one can trivially filter through piles of trace and end up with only those entries that have a meaning in the current context.
+`LoggingScope` aims to make it less of a pain to explore and discover the full story behind log entries. By attaching context specific `ScopeIds` to entries, one can trivially filter through piles of trace and end up with only those entries that have a meaning in the context that is under investigation.
 
 
 # Getting started
-NuGet package (https://www.nuget.org/packages/NLog.LoggingScope/) is available via NPM
+NuGet package (https://www.nuget.org/packages/NLog.LoggingScope/) is available via NPM:
 ```
 install-package NLog.LoggingScope
 ```
@@ -32,7 +32,7 @@ ScopeId                               ScopeName     Severity  Message
 f162e96b-9e64-4cc9-9e1d-f1105b32d204  AnotherScope  Info      Fizz
 f162e96b-9e64-4cc9-9e1d-f1105b32d204  AnotherScope  Info      Buzz
 ```
-Being unique for each scope, one is able to find out what happened in each block *during a single execution* by searching log entries by a `ScopeId`. A new `ScopeId` is generated for each instance of `LoggingScope`:
+`ScopeIds` being unique for each scope, one is able to find out what happened in each block *during a single execution* by searching log entries by a `ScopeId`. A new `ScopeId` is generated for each instance of `LoggingScope`:
 ```C#
 public class MyApp
 {
@@ -73,7 +73,7 @@ ScopeId                               ScopeName  ParentScopeId                  
 94bb82a3-7b63-4bb6-aa66-807f2a2d863d  TheParent                                        Three
 ```
 
-These parent-child-connections form essentially a linked tree structure; the highest parent is the root. This provides nice options for *adjusting the focusing* one's log searches, focusing on smaller or larger contextes, whichever provides more insight.
+Essentially these parent-child-connections form a linked tree structure in which the highest parent is the root. This provides options for *adjusting the focus* of one's log searches. One may search for log entries by only the lowest child's `ScopeId` or involve parents' `ScopeIds` to the search, broadening the focus.
 
 ## SQL-target
 TODO
