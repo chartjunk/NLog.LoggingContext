@@ -54,7 +54,7 @@ ScopeId                               ScopeName  Severity  Message
 d98dc934-2675-4072-9b57-ced90a4071d6  Lorem      Trace     Ipsum
 ```
 
-## Nesting scopes make them bound together with `ScopeIds`
+## Nested scopes are bound together using `ScopeIds`
 ```C#
 using(new LoggingScope("TheParent"))
 {
@@ -75,11 +75,11 @@ ScopeId                               ScopeName  ParentScopeId                  
 
 Essentially these parent-child-connections form a linked tree structure in which the highest parent is the root. This provides options for *adjusting the focus* of one's log searches. One may search for log entries by only the lowest child's `ScopeId` or involve parents' `ScopeIds` to the search, broadening the focus.
 
-## SQL-target
+# SQL-target
 TODO
 
-## NLog configuration
+# NLog configuration
 TODO
 
-## Custom fields
+# Custom fields
 TODO
