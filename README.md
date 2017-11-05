@@ -75,11 +75,46 @@ ScopeId                               ScopeName  ParentScopeId                  
 
 Essentially these parent-child-connections form a linked tree structure in which the highest parent is the root. This provides options for *adjusting the focus* of one's log searches. One may search for log entries by only the lowest child's `ScopeId` or involve parents' `ScopeIds` to the search, broadening the focus.
 
-# SQL-target
-TODO
-
-# NLog configuration
-TODO
+# SQL target
+`NLog.LoggingScope` makes it effortless to target one's logs to an SQL database table. The default log table schema is:
+```SQL
+CREATE TABLE mySchema.MyLogTable
+(
+    [Id] IDENTITY BIGINT PRIMARY KEY,
+    [ScopeId] CHAR(36) NOT NULL,
+    [ScopeName] VARCHAR(128),
+    [Level] VARCHAR(16),
+    [Message] NVARCHAR(MAX),
+    [Exception] NVARCHAR(MAX),
+    [InnerException] NVARCHAR(MAX),
+    [ParentScopeId] CHAR(36),
+    [TopmostParentScopeId] CHAR(36) NOT NULL
+)
+``` 
+Logging to this table is enabled by adding the following NLog target to your NLog config:
+```XML
+<target xsi:type="DefaultLoggingScopeDbTarget" 
+        name="SomeNameForMyTarget" 
+        connectionString="Connection string"
+        schemaTableName="mySchema.MyLogTable"
+        dbProvider="A fully qualified name for the DB provider"/>
+```
+If preferred, `connectionStringName` attribute can be use instead of `connectionString`. If logging should target Microsoft SQL Server, `dbProvider` should be set to value `sqlserver`. If multiple `DefaultLoggingContextDbTargets` are used within the same database, one may use the *shared configuration* pattern by adding the following values to `App.config`:
+```XML
+<appSettings>
+    <add key="NLog.LoggingScope:ConnectionString" value="Connection string"/>
+    <add key="NLog.LoggingScope:DbProvider" value="A fully qualified name for the DB provider"/>
+</appSettings>
+```
+In this case, the NLog target configuration reduces to:
+```XML
+<target xsi:type="DefaultLoggingScopeDbTarget" name="CommonLogTarget" schemaTableName="dbo.CommonLog"/>
+<target xsi:type="DefaultLoggingScopeDbTarget" name="UserInterfaceLogTarget" schemaTableName="dbo.UILog"/>
+```
+Once again, for the shared configuration `NLog.LoggingScope:ConnectionStringName` may be used instead of `NLog.LoggingScope:ConnectionString`.
 
 # Custom fields
+TODO
+
+# Custom target
 TODO
