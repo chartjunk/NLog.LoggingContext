@@ -9,8 +9,8 @@
   </ItemGroup>
   
   <PropertyGroup>
-    <Version>1.0</Version>
-    <FileVersion>1.0</FileVersion>
+    <Version>1.0.2</Version>
+    <FileVersion>1.0.2</FileVersion>
     <Authors>Joona Luoma</Authors>
     <Description>NLog logging scope tool</Description>
     <Copyright>Copyright (c) 2017 Joona Luoma</Copyright>
@@ -18,7 +18,7 @@
 
   <PropertyGroup>
     <PackageId>NLog.LoggingScope</PackageId>
-    <PackageVersion>1.0</PackageVersion>
+    <PackageVersion>1.0.2</PackageVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageTags>NLog logging context scope scoping identifier id</PackageTags>
     <PackageLicenseUrl>https://github.com/chartjunk/NLog.LoggingScope/blob/master/LICENSE.md</PackageLicenseUrl>
