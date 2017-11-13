@@ -5,17 +5,17 @@ namespace NLog.LoggingScope.WithSchemaExtension
 {
     public class WithSchemaSetter<TSchema> where TSchema : class
     {
-        private readonly LoggingScope _LoggingScope;
+        private readonly LoggingScope _loggingScope;
 
-        public WithSchemaSetter(LoggingScope LoggingScope)
+        public WithSchemaSetter(LoggingScope loggingScope)
         {
-            _LoggingScope = LoggingScope;
+            _loggingScope = loggingScope;
         }
 
         public WithSchemaSetter<TSchema> Set<TValue>(Expression<Func<TSchema, TValue>> propertyExpression, TValue value)
         {
             var property = ReflectionUtils.GetPropertyInfo(propertyExpression);
-            DiagnosticContextUtils.Gdc.SetGdcByShortKey(property.Name, _LoggingScope.ScopeId, Convert.ToString(value));
+            _loggingScope.Set(property.Name, Convert.ToString(value));
             return this;
         }
     }
