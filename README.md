@@ -174,7 +174,6 @@ using(new LoggingScope("MoneyMakingApp").Set("AD_UserName", currentAdUserName))
   Logger.Trace("Business as usual");
 }
 ```
-which leads to the following log entry:
 ```
 ScopeId                               ScopeName       Message            AD_UserName
 59c8369d-e8bd-4478-9221-4888f28abe97  MoneyMakingApp  Business as usual  who.ever@corporation.com
