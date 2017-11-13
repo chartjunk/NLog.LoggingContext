@@ -35,18 +35,26 @@ namespace NLog.LoggingScope.Targets
         }
 
         public static void DoDefaultInitialization<TDefaultLogSchema>(
-            LoggingScopeDbTarget<TDefaultLogSchema> target, string schemaTableName)
+            LoggingScopeDbTarget<TDefaultLogSchema> target, string schemaTableName = null)
             where TDefaultLogSchema : DefaultLogSchema
         {
-            // Set table creation and dropping commands
-            // NOTE: These are necessary only if you use target.Install(...) and target.Uninstall(...) explicitly
-            target.InstallDdlCommands.Add(new DatabaseCommandInfo
+            if (schemaTableName != null)
             {
-                Text = GetInstallCommandSql(schemaTableName),
-                CommandType = System.Data.CommandType.Text,
-                IgnoreFailures = false
-            });
-            target.UninstallDdlCommands.Add(new DatabaseCommandInfo { Text = $"DROP TABLE {schemaTableName}", CommandType = System.Data.CommandType.Text, IgnoreFailures = false });
+                // Set table creation and dropping commands
+                // NOTE: These are necessary only if you use target.Install(...) and target.Uninstall(...) explicitly
+                target.InstallDdlCommands.Add(new DatabaseCommandInfo
+                {
+                    Text = GetInstallCommandSql(schemaTableName),
+                    CommandType = System.Data.CommandType.Text,
+                    IgnoreFailures = false
+                });
+                target.UninstallDdlCommands.Add(new DatabaseCommandInfo
+                {
+                    Text = $"DROP TABLE {schemaTableName}",
+                    CommandType = System.Data.CommandType.Text,
+                    IgnoreFailures = false
+                });
+            }
 
             // Set parameters
             target.AddColumn(Layouts.ScopeIdLayout, d => d.ScopeId);
