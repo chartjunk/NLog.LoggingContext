@@ -146,7 +146,7 @@ Let's assume that the target is declared in an assembly called `MyApp.MyAssembly
 </nlog>
 ```
 
-This implies that there is the following table in the database:
+This implies that there should be the following table in the database:
 ```SQL
 CREATE TABLE dbo.UserLog
 (
