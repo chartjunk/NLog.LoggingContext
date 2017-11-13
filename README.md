@@ -80,7 +80,7 @@ Essentially these parent-child-connections form a linked tree structure in which
 ```SQL
 CREATE TABLE mySchema.MyLogTable
 (
-    [Id] IDENTITY BIGINT PRIMARY KEY,
+    [Id] BIGINT IDENTITY PRIMARY KEY,
     [ScopeId] CHAR(36) NOT NULL,
     [ScopeName] VARCHAR(128),
     [Level] VARCHAR(16),
