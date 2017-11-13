@@ -1,5 +1,6 @@
 # NLog.LoggingScope
 [![NuGet](https://img.shields.io/nuget/dt/NLog.LoggingScope.svg)](https://www.nuget.org/packages/NLog.LoggingScope)
+
 `LoggingScope` aims to make it less of a pain to explore and discover the full story behind log entries. By attaching context specific `ScopeIds` to entries, one can trivially filter through piles of trace and end up with only those entries that have a meaning in the context under investigation.
 
 
