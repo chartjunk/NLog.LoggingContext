@@ -148,7 +148,7 @@ Let's assume that the target is declared in an assembly called `MyApp.MyAssembly
 
 This implies that there is the following table in the database:
 ```SQL
-CREATE TABLE mySchema.MyLogTable
+CREATE TABLE dbo.UserLog
 (
     [Id] BIGINT IDENTITY PRIMARY KEY,
     [ScopeId] CHAR(36) NOT NULL,
