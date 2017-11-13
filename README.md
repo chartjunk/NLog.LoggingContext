@@ -1,5 +1,5 @@
 # NLog.LoggingScope
-`LoggingScope` aims to make it less of a pain to explore and discover the full story behind log entries. By attaching context specific `ScopeIds` to entries, one can trivially filter through piles of trace and end up with only those entries that have a meaning in the context that is under investigation.
+`LoggingScope` aims to make it less of a pain to explore and discover the full story behind log entries. By attaching context specific `ScopeIds` to entries, one can trivially filter through piles of trace and end up with only those entries that have a meaning in the context under investigation.
 
 
 # Getting started
@@ -32,7 +32,7 @@ ScopeId                               ScopeName     Severity  Message
 f162e96b-9e64-4cc9-9e1d-f1105b32d204  AnotherScope  Info      Fizz
 f162e96b-9e64-4cc9-9e1d-f1105b32d204  AnotherScope  Info      Buzz
 ```
-`ScopeIds` being unique for each scope, one is able to find out what happened in each block *during a single execution* by searching log entries by a `ScopeId`. A new `ScopeId` is generated for each instance of `LoggingScope`:
+Since `ScopeIds` are unique for each scope, it is possible to figure out what happened in each block *during a single execution* by searching log entries by a `ScopeId`. A new `ScopeId` is generated for each instance of `LoggingScope`:
 ```C#
 public class MyApp
 {
@@ -73,10 +73,10 @@ ScopeId                               ScopeName  ParentScopeId                  
 94bb82a3-7b63-4bb6-aa66-807f2a2d863d  TheParent                                        Three
 ```
 
-Essentially these parent-child-connections form a linked tree structure in which the highest parent is the root. This provides options for *adjusting the focus* of one's log searches. One may search for log entries by only the lowest child's `ScopeId` or involve parents' `ScopeIds` to the search, broadening the focus.
+Essentially these parent-child-connections form a linked tree structure in which the highest parent is the root. This provides options for *adjusting the focus* of log searches. Log entries can be searched by only the `ScopeId` of the lowest child, or involve `ScopeIds` of the parents to the search, which broadens the focus.
 
 # SQL target
-`NLog.LoggingScope` makes it effortless to target one's logs to an SQL database table. The default log table schema is:
+`NLog.LoggingScope` makes it effortless to target logging to a SQL database table. The default log table schema is:
 ```SQL
 CREATE TABLE mySchema.MyLogTable
 (
@@ -91,7 +91,7 @@ CREATE TABLE mySchema.MyLogTable
     [TopmostParentScopeId] CHAR(36) NOT NULL
 )
 ``` 
-Logging to this table is enabled by adding the following NLog target to your NLog config:
+Logging to this table is enabled by adding the following NLog target to the NLog config:
 ```XML
 <target xsi:type="DefaultLoggingScopeDbTarget" 
         name="SomeNameForMyTarget" 
@@ -99,7 +99,7 @@ Logging to this table is enabled by adding the following NLog target to your NLo
         schemaTableName="mySchema.MyLogTable"
         dbProvider="A fully qualified name for the DB provider"/>
 ```
-If preferred, `connectionStringName` attribute can be use instead of `connectionString`. If logging should target Microsoft SQL Server, `dbProvider` should be set to value `sqlserver`. If multiple `DefaultLoggingContextDbTargets` are used within the same database, one may use the *shared configuration* pattern by adding the following values to `App.config`:
+If preferred, `connectionStringName` attribute can be used instead of `connectionString`. If Microsoft SQL Server is used, `dbProvider` should be set to value `sqlserver`. If multiple `DefaultLoggingContextDbTargets` are used within the same database, configuration can be shared between targets by adding the following values to `App.config`:
 ```XML
 <appSettings>
     <add key="NLog.LoggingScope:ConnectionString" value="Connection string"/>
@@ -111,10 +111,69 @@ In this case, the NLog target configuration reduces to:
 <target xsi:type="DefaultLoggingScopeDbTarget" name="CommonLogTarget" schemaTableName="dbo.CommonLog"/>
 <target xsi:type="DefaultLoggingScopeDbTarget" name="UserInterfaceLogTarget" schemaTableName="dbo.UILog"/>
 ```
-Once again, for the shared configuration `NLog.LoggingScope:ConnectionStringName` may be used instead of `NLog.LoggingScope:ConnectionString`.
+Once again, for the shared configuration, `NLog.LoggingScope:ConnectionStringName` may be used instead of `NLog.LoggingScope:ConnectionString`.
 
-# Custom fields
-TODO
+# Custom targets
+`LoggingScope` provides tools for creating customised target for different scenarios. For instance, if information about the user of an application is wanted to be included to the trace, the following target can be inherited from the default target:
 
-# Custom target
-TODO
+```C#
+using NLog.Targets;
+
+[Target("UserDbLoggingScopeTarget")]
+public UserLoggingTarget : DefaultLoggingContextDbTarget
+{
+  public UserLoggingTarget()
+  {
+    AddGdcColumn("AD_UserName");
+  }
+}
+```
+
+Let's assume that the target is declared in an assembly called `MyApp.MyAssembly`. The target can be used in `NLog.config` by adding the assembly as an extension:
+```XML
+<nlog>
+  <extensions>
+    <add assembly="MyApp.MyAssembly"/>
+  </extensions>
+
+  <targets>
+    <target xsi:type="UserDbLoggingScopeTarget" name="MyUserLoggingTarget" schemaTableName="dbo.UserLog"/>
+  </targets>
+  
+  <rules>
+    <logger name="*" levels="Trace,Debug,Fatal,Error,Warn,Info" writeTo="MyUserLoggingTarget"/>
+  </rules>
+</nlog>
+```
+
+This implies that there is the following table in the database:
+```SQL
+CREATE TABLE dbo.UserLog
+(
+    [Id] BIGINT IDENTITY PRIMARY KEY,
+    [ScopeId] CHAR(36) NOT NULL,
+    [ScopeName] VARCHAR(128),
+    [Level] VARCHAR(16),
+    [Message] NVARCHAR(MAX),
+    [Exception] NVARCHAR(MAX),
+    [InnerException] NVARCHAR(MAX),
+    [ParentScopeId] CHAR(36),
+    [TopmostParentScopeId] CHAR(36) NOT NULL,
+    [AD_UserName] VARCHAR(128)
+)
+```
+
+Now, the `AD_UserName` is logged whenever it is declared for the current scope with `.Set` method:
+
+```C#
+var currentAdUserName = 'who.ever@corporation.com'
+using(new LoggingScope("MoneyMakingApp").Set("AD_UserName", currentAdUserName))
+{
+  Logger.Trace("Business as usual");
+}
+```
+which leads to the following log entry:
+```
+ScopeId                               ScopeName       Message            AD_UserName
+59c8369d-e8bd-4478-9221-4888f28abe97  MoneyMakingApp  Business as usual  who.ever@corporation.com
+```
