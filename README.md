@@ -196,8 +196,8 @@ using(new LoggingScope("MoneyMaker").Set("AD_UserName", currentAdUserName))
 }
 ```
 ```
-ScopeId                               ScopeName       Message            AD_UserName
-59c8369d-e8bd-4478-9221-4888f28abe97  MoneyMaker      Business as usual  who.ever@corporation.com
+ScopeId                               ScopeName   Message            AD_UserName
+59c8369d-e8bd-4478-9221-4888f28abe97  MoneyMaker  Business as usual  who.ever@corporation.com
 ```
 There are also strongly typed alternatives for the mentioned methods:
 ```C#
