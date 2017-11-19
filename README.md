@@ -197,11 +197,10 @@ using(new LoggingScope("MoneyMaker").Set("AD_UserName", currentAdUserName))
 ```
 ```
 ScopeId                               ScopeName       Message            AD_UserName
-59c8369d-e8bd-4478-9221-4888f28abe97  MoneyMakingApp  Business as usual  who.ever@corporation.com
+59c8369d-e8bd-4478-9221-4888f28abe97  MoneyMaker      Business as usual  who.ever@corporation.com
 ```
 There are also strongly typed alternatives for the mentioned methods:
 ```C#
-AddGdcColumn<UserLog>(a => a.AD_UserName)
-// and
-new LoggingScope("MoneyMakingApp").WithSchema<UserLog>(w => w.Set(s => s.AD_UserName, currentAdUserName))
+AddGdcColumn<UserLog>(a => a.AD_UserName);
+new LoggingScope("MoneyMaker").WithSchema<UserLog>(w => w.Set(s => s.AD_UserName, currentAdUserName));
 ```
