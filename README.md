@@ -77,6 +77,27 @@ ScopeId                               ScopeName  ParentScopeId                  
 
 Essentially these parent-child-connections form a linked tree structure in which the highest parent is the root. This provides options for *adjusting the focus* of log searches. Log entries can be searched by only the `ScopeId` of the lowest child, or involve `ScopeIds` of the parents to the search, which broadens the focus.
 
+## Using `ScopeId` within business rules
+In some situations it could be valuable to sustain the connection between the actual data and the log trace. This can be achieved with `ScopeIds`. As an example:
+```C#
+public static void CreateProduct(this DB db, string productNumber)
+{
+  using(var loggingScope = new LoggingScope("ProductCreation"))
+  {
+    Logger.Debug("Creating product " + productNumber);
+    var product = new Product
+    {
+      ProductNumber = productNumber,
+      CreationScopeId = loggingScope.ScopeId 
+    };
+    db.PersistProduct(product);
+  }
+}
+```
+This way the contexts in which products are created can be tracked by simply joining the product data to the logs.
+
+*TODO: Make it possible to get `ScopeIds` in a static manner, since a current scope is visible in a current MDLC*
+
 # SQL target
 `NLog.LoggingScope` makes it effortless to target logging to a SQL database table. The default log table schema is:
 ```SQL
@@ -168,8 +189,8 @@ CREATE TABLE dbo.UserLog
 Now, the `AD_UserName` is logged whenever it is declared for the current scope with `.Set` method:
 
 ```C#
-var currentAdUserName = 'who.ever@corporation.com'
-using(new LoggingScope("MoneyMakingApp").Set("AD_UserName", currentAdUserName))
+var currentAdUserName = "who.ever@corporation.com"
+using(new LoggingScope("MoneyMaker").Set("AD_UserName", currentAdUserName))
 {
   Logger.Trace("Business as usual");
 }
